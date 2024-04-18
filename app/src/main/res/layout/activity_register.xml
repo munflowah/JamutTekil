@@ -79,6 +79,7 @@
         android:fontFamily="@font/alata"
         android:foregroundTint="#51E7F1F0"
         android:hint="Nombre de usuario"
+
         android:inputType="text"
         android:padding="15dp"
         android:textAlignment="center"
