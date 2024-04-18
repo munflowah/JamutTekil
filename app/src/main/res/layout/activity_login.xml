@@ -11,58 +11,68 @@
         android:id="@+id/txtWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="98dp"
         android:fontFamily="@font/alata"
         android:text="Bienvenido"
         android:textSize="40dp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="98dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtGetData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/alata"
         android:text="Ingresa tus datos"
         android:textSize="22dp"
-        tools:layout_editor_absoluteX="118dp"
-        tools:layout_editor_absoluteY="169dp" />
+        app:layout_constraintStart_toStartOf="@+id/txtWelcome"
+        app:layout_constraintTop_toBottomOf="@+id/txtWelcome" />
 
     <EditText
-        android:id="@+id/edtName"
+        android:id="@+id/edtUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="77dp"
         android:ems="10"
         android:fontFamily="@font/alata"
         android:foregroundTint="#51E7F1F0"
-        android:inputType="text"
         android:hint="Nombre de usuario"
+        android:inputType="text"
         android:textAlignment="center"
         android:textColorHint="#CB6DA633"
-        tools:layout_editor_absoluteX="81dp"
-        tools:layout_editor_absoluteY="280dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtGetData" />
 
     <EditText
         android:id="@+id/edtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="17dp"
         android:ems="10"
-        android:inputType="textPassword"
         android:hint="Contraseña"
+        android:inputType="textPassword"
         android:textAlignment="center"
         android:textColorHint="#CB6DA633"
-        tools:layout_editor_absoluteX="102dp"
-        tools:layout_editor_absoluteY="354dp" />
+        app:layout_constraintEnd_toEndOf="@+id/edtUsername"
+        app:layout_constraintTop_toBottomOf="@+id/edtUsername" />
 
     <Button
         android:id="@+id/btnAccessLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="38dp"
         android:backgroundTint="#F28F38"
         android:text="Ingresar"
         android:textSize="20dp"
-        tools:layout_editor_absoluteX="143dp"
-        tools:layout_editor_absoluteY="437dp" />
+        app:layout_constraintStart_toStartOf="@+id/edtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
