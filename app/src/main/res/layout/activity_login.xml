@@ -40,7 +40,7 @@
         android:ems="10"
         android:fontFamily="@font/alata"
         android:foregroundTint="#51E7F1F0"
-        android:hint="Nombre de usuario"
+        android:hint="Correo"
         android:inputType="text"
         android:textAlignment="center"
         android:textColorHint="#CB6DA633"

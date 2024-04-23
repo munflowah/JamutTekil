@@ -78,7 +78,7 @@
         android:ems="10"
         android:fontFamily="@font/alata"
         android:foregroundTint="#51E7F1F0"
-        android:hint="Nombre de usuario"
+        android:hint="Correo"
 
         android:inputType="text"
         android:padding="15dp"
@@ -136,13 +136,13 @@
         app:layout_constraintTop_toBottomOf="@+id/edtUsername" />
 
     <Button
-        android:id="@+id/btnAccessLogin"
+        android:id="@+id/btnRegistrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="72dp"
         android:backgroundTint="#F28F38"
-        android:text="Ingresar"
+        android:text="Registrar"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="@+id/edtPassword"
         app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
