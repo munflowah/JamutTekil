@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "893224360495",
+    "project_id": "jamuttekil",
+    "storage_bucket": "jamuttekil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893224360495:android:bc8e90387257c11844c4da",
+        "android_client_info": {
+          "package_name": "mx.edu.itesca.jamuttekil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABQsSnx3OlGxm3BycAiy0EUxeCgsjTlBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
