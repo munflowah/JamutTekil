@@ -7,38 +7,67 @@
     android:background="@color/whitebone"
     tools:context=".Order">
 
-    <TextView
-        android:id="@+id/txtOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="98dp"
-        android:layout_marginBottom="51dp"
-        android:fontFamily="@font/alata"
-        android:text="Ordenes"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnDoOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#F28F38"
-        android:text="Hacer Pedido"
-        android:textSize="20dp"
-        tools:layout_editor_absoluteX="119dp"
-        tools:layout_editor_absoluteY="282dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:background="@color/orange"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
 
-    <Button
-        android:id="@+id/btnSeeOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#F28F38"
-        android:text="Ver pedidos"
-        android:textSize="20dp"
-        tools:layout_editor_absoluteX="127dp"
-        tools:layout_editor_absoluteY="358dp" />
+        <TextView
+            android:id="@+id/txtOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alata"
+            android:layout_gravity="center_horizontal"
+            android:text="Ordenes"
+            android:textSize="40dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="630dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="100dp">
+
+        <Button
+            android:id="@+id/btnnewOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="20dp"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/whitebone"
+            android:drawableTop="@drawable/icnneworder"
+            android:fontFamily="@font/alata"
+            android:text="Hacer Pedido"
+            android:textColor="@color/black"
+            android:textSize="22dp" />
+
+        <Button
+            android:id="@+id/btnSeeOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingVertical="20dp"
+            android:backgroundTint="@color/whitebone"
+            android:drawableTop="@drawable/icnseeorder"
+            android:fontFamily="@font/alata"
+            android:text="Ver pedidos"
+            android:textColor="@color/black"
+            android:textSize="22dp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
