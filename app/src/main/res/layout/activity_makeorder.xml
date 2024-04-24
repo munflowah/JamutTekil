@@ -52,7 +52,7 @@
             android:layout_gravity="right"
             android:layout_marginRight="50dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icncar"
+            app:srcCompat="@drawable/icnlittlecar"
             tools:ignore="MissingConstraints" />
 
     </LinearLayout>

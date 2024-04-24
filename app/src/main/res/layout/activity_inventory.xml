@@ -7,34 +7,33 @@
     android:background="@color/whitebone"
     tools:context=".Order"
     android:orientation="vertical"
-    android:layout_margin="15dp">
+    >
 
-    <TextView
-        android:id="@+id/txtMenu"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
-        android:fontFamily="@font/alata"
-        android:text="Inventario"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="100dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:background="@color/orange"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
 
-    <!--
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Listado De Luchadores"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:textStyle="bold" />
--->
+        <TextView
+            android:id="@+id/txtMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alata"
+            android:text="Inventario"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,8 +50,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="50dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center_vertical"
         android:orientation="horizontal"
         >
 
@@ -61,6 +60,7 @@
             android:backgroundTint="#F28F38"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -72,6 +72,7 @@
             android:backgroundTint="#6DA633"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
