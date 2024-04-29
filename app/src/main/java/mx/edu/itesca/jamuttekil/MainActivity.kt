@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         val btnLogin = findViewById<Button>(R.id.btnAccess)
         val btnRegistro = findViewById<Button>(R.id.btnRegister)
+
         // Cuando se hace clic en "Iniciar Sesión", se navega a la actividad de inicio de sesión
         btnLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)

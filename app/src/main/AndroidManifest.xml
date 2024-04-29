@@ -25,7 +25,9 @@
         </activity>
         <activity android:name=".LoginActivity" />  <!-- Declaración de LoginActivity -->
         <activity android:name=".RegisterActivity" />  <!-- Declaración de RegisterActivity -->
-        <!-- TORITHO 17 -->
+        <activity android:name=".MenuActivity" />  <!-- Declaración de MenuActivity -->
+        <activity android:name=".Inventario"/>
+        <activity android:name=".Pedidos"/>
 
         <meta-data
             android:name="preloaded_fonts"

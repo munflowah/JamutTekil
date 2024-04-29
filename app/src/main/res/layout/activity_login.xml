@@ -8,12 +8,14 @@
     tools:context=".LoginActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
         android:layout_height="300dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
         <TextView
@@ -21,9 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
-            android:textAlignment="center"
             android:fontFamily="@font/alata"
             android:text="Bienvenido"
+            android:textAlignment="center"
             android:textSize="40dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,12 +45,15 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout4"
+        android:layout_width="0dp"
         android:layout_height="400dp"
+        android:layout_marginBottom="101dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="230dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
         <EditText
@@ -56,12 +61,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:paddingVertical="20dp"
             android:ems="10"
             android:fontFamily="@font/alata"
             android:foregroundTint="#51E7F1F0"
             android:hint="Correo"
             android:inputType="text"
+            android:paddingVertical="20dp"
             android:textAlignment="center"
             android:textColorHint="#CB6DA633"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,11 +77,11 @@
             android:id="@+id/edtPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
             android:layout_marginVertical="10dp"
             android:ems="10"
             android:hint="Contraseña"
             android:inputType="textPassword"
+            android:paddingVertical="20dp"
             android:textAlignment="center"
             android:textColorHint="#CB6DA633"
             app:layout_constraintEnd_toEndOf="@+id/edtUsername"
@@ -94,8 +99,6 @@
             app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
     </LinearLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

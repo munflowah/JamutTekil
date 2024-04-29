@@ -6,40 +6,46 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : AppCompatActivity() {
-
-    private lateinit var auth: FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        auth = FirebaseAuth.getInstance()
+        mAuth = FirebaseAuth.getInstance()
 
-        val edtEmail = findViewById<EditText>(R.id.edtUsername)
-        val edtPassword = findViewById<EditText>(R.id.edtPassword)
-        val btnLogin = findViewById<Button>(R.id.btnAccessLogin)
+        val emailEditText = findViewById<EditText>(R.id.edtUsername)
+        val passwordEditText = findViewById<EditText>(R.id.edtPassword)
+        val loginButton = findViewById<Button>(R.id.btnAccessLogin)
 
-        btnLogin.setOnClickListener {
-            val email = edtEmail.text.toString()
-            val password = edtPassword.text.toString()
+        loginButton.setOnClickListener {
+            val email = emailEditText.text.toString().trim()
+            val password = passwordEditText.text.toString().trim()
 
-            if (email.isNotBlank() && password.isNotBlank()) {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val user: FirebaseUser? = auth.currentUser
-                            Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                            // Aquí puedes navegar a otra actividad si lo deseas
-                        } else {
-                            Toast.makeText(this, "Error en el inicio de sesión", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Hay campos vacios", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Ingrese correo y contraseña", Toast.LENGTH_SHORT).show()
+                loginUser(email, password)
             }
         }
+    }
+
+    private fun loginUser(email: String, password: String) {
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign-in successful
+                    Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
+                    // Aquí puedes redirigir a otra actividad si el inicio de sesión es exitoso
+                    val intent = Intent(this, MenuActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // Sign-in failed
+                    val errorMessage = task.exception?.message ?: "Error de autenticación"
+                            Toast.makeText(this, "Error: Datos Invalidos", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
