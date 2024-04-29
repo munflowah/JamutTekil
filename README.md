@@ -1,7 +1,35 @@
-Plebes hice este correo para la conexion con firebase para que cada quien pueda acceder 
+## Plebes hice este correo para la conexion con firebase para que cada quien pueda acceder 
 
-Correo Electornico 
+## Correo Electornico 
 grupojamuttekil@gmail.com
 
-Contraseña: 
+## Contraseña: 
 @Chorizo2024
+
+# Nombre del Proyecto
+
+Breve descripción del proyecto y su propósito.
+
+## Requisitos Previos
+
+- [Git](https://git-scm.com/) debe estar instalado.
+
+## Clonar el Repositorio
+
+Para obtener una copia local del proyecto, use el siguiente comando:
+
+git clone https://github.com/usuario/nombre-del-proyecto.git
+
+## Agregar y Confirmar Cambios
+
+git add .
+git commit -m "Descripción del cambio"
+
+## Mandar Cambios Al Repositorio 
+
+
+git push
+
+## Actualizar Cambios
+
+git pull 
