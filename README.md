@@ -6,10 +6,6 @@ grupojamuttekil@gmail.com
 ## Contraseña: 
 @Chorizo2024
 
-# Nombre del Proyecto
-
-Breve descripción del proyecto y su propósito.
-
 ## Requisitos Previos
 
 - [Git](https://git-scm.com/) debe estar instalado.
