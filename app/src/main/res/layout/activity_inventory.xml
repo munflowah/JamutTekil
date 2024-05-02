@@ -44,7 +44,8 @@
             android:id="@+id/lvInventory"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            />
+            android:clickable="true"
+            android:focusable="true" />
 
     </LinearLayout>
 
@@ -56,29 +57,38 @@
         >
 
         <Button
-            android:id="@+id/btnEdit"
-            android:backgroundTint="#F28F38"
+            android:id="@+id/btnAgregar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:layout_marginStart="30dp"
+            android:backgroundTint="#F28F38"
+            android:text="Agregar"
+            android:layout_marginEnd="40dp"/>
+<!--
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="#6DA633"
+            android:text="Guardar" /> -->
+
+        <Button
+            android:id="@+id/btnEditar"
+            android:backgroundTint="#6DA633"
             android:layout_marginEnd="30dp"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Editar"
-            />
-
-        <Button
-            android:id="@+id/btnGuardar"
-            android:backgroundTint="#6DA633"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:text="Guardar"
             />
 
     </LinearLayout>
