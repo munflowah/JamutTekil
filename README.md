@@ -19,10 +19,10 @@ git clone https://github.com/usuario/nombre-del-proyecto.git
 ## Agregar y Confirmar Cambios
 
 git add .
+
 git commit -m "Descripción del cambio"
 
 ## Mandar Cambios Al Repositorio 
-
 
 git push
 

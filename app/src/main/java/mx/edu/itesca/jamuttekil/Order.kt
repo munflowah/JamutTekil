@@ -1,4 +1,0 @@
-package drawable
-
-class Order {
-}
