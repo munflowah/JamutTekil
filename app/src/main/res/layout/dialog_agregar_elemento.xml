@@ -27,6 +27,7 @@
         android:id="@+id/etIdProd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:hint="ID de producto" />
 
     <EditText
@@ -36,13 +37,30 @@
         android:hint="Precio de producto" />
 
 
-    <Button
-        android:id="@+id/btnGuardarElemento"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#6DA633"
-        android:text="Guardar" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnGuardarElemento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/orange"
+            android:text="Guardar" />
+
+        <Button
+            android:id="@+id/btnEliminarElemento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="20dp"
+            android:backgroundTint="@color/rojo"
+            android:text="Eliminar" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

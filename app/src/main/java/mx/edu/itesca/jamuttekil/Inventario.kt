@@ -123,12 +123,16 @@ class Inventario : AppCompatActivity() {
         val etUnidadMedida: EditText = dialogView.findViewById(R.id.etUnidadMedida)
         val etPrecioProd: EditText = dialogView.findViewById(R.id.etPrecioProd)
         val btnGuardarElemento: Button = dialogView.findViewById(R.id.btnGuardarElemento)
+        val btnEliminarElemento: Button = dialogView.findViewById(R.id.btnEliminarElemento) // Nuevo botón para eliminar
+
+
 
         // Rellenar los EditTexts con los datos del elemento seleccionado
         etNombre.setText(item.nombre)
         etCantidad.setText(item.cantidad.toString())
         etUnidadMedida.setText(item.unidadMedida)
         etPrecioProd.setText(item.precioProd.toString())
+
 
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -145,6 +149,11 @@ class Inventario : AppCompatActivity() {
             // Actualizar elemento en la base de datos y en la lista local
             actualizarElementoEnBaseDeDatos(item.idProd, nombre, cantidad, unidadMedida, precioProd)
             dialogBuilder.dismiss()
+        }
+        //aqui se usa el listener para llamar a las funciones de eliminar
+        btnEliminarElemento.setOnClickListener {
+            mostrarConfirmacionEliminar(item.idProd)
+            dialogBuilder.dismiss() // Cerrar el diálogo de editar después de eliminar
         }
 
         dialogBuilder.show()
@@ -250,5 +259,39 @@ class Inventario : AppCompatActivity() {
                 Log.e(TAG, "Error al obtener datos del inventario: $exception")
             }
     }
+    private fun mostrarConfirmacionEliminar(idProd: String) {
+        val confirmacionDialog = AlertDialog.Builder(this)
+            .setTitle("Confirmar Eliminación")
+            .setMessage("¿Estás seguro de que deseas eliminar este elemento?")
+            .setPositiveButton("Sí") { _, _ ->
+                eliminarElemento(idProd)
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        confirmacionDialog.show()
+    }
+
+    private fun eliminarElemento(idProd: String) {
+        val db = FirebaseFirestore.getInstance()
+        val inventarioRef = db.collection("Inventario").document(idProd)
+
+        inventarioRef.delete()
+            .addOnSuccessListener {
+                // Eliminar el elemento de la lista local y actualizar el adaptador
+                val itemEliminado = inventarioList.find { it.idProd == idProd }
+                itemEliminado?.let {
+                    inventarioList.remove(it)
+                    inventarioAdapter.actualizarLista(inventarioList)
+                }
+                Toast.makeText(this, "Elemento eliminado exitosamente", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al eliminar el elemento", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 }
 
