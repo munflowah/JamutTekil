@@ -1,7 +1,9 @@
 package mx.edu.itesca.jamuttekil
 
 import InventarioAdapter
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -16,6 +18,7 @@ class Inventario : AppCompatActivity() {
     private lateinit var listView: ListView
     private lateinit var inventarioAdapter: InventarioAdapter
     private lateinit var inventarioList: MutableList<InventarioItem>
+    private lateinit var btnEditar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,19 +35,22 @@ class Inventario : AppCompatActivity() {
 
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = inventarioAdapter.getItem(position) as InventarioItem
+            inventarioAdapter.setSelectedItem(selectedItem) // Establecer elemento seleccionado en el adaptador
+            btnEditar.isEnabled = true // Habilitar el botón de editar
+            inventarioAdapter.notifyDataSetChanged() // Notificar al adaptador sobre el cambio
+        }
+
+        btnEditar = findViewById(R.id.btnEditar)
+        btnEditar.isEnabled = false // Deshabilitar el botón de editar inicialmente
+
+        inventarioAdapter.setOnEditClickListener { selectedItem ->
+            mostrarDialogoEditarElemento(selectedItem)
         }
 
         // Botón Agregar
         val btnAgregar: Button = findViewById(R.id.btnAgregar)
         btnAgregar.setOnClickListener {
             mostrarDialogoAgregarElemento()
-        }
-
-        val btnEditar: Button = findViewById(R.id.btnEditar)
-        btnEditar.isEnabled = false // Deshabilitar inicialmente el botón hasta que se seleccione un elemento
-
-        inventarioAdapter.setOnEditClickListener { selectedItem ->
-            mostrarDialogoEditarElemento(selectedItem)
         }
 
         listView.setOnItemClickListener { parent, view, position, id ->
@@ -60,7 +66,28 @@ class Inventario : AppCompatActivity() {
                 mostrarDialogoEditarElemento(selectedItem)
             }
         }
+
+        manejarSeleccionElemento()
     }
+
+    private fun manejarSeleccionElemento() {
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val selectedItem = inventarioAdapter.getItem(position) as InventarioItem
+            inventarioAdapter.setSelectedItem(selectedItem)
+            btnEditar.isEnabled =
+                true // Habilitar el botón de editar cuando se selecciona un elemento
+
+        }
+
+        // Al hacer clic en el botón Editar se activa y ya es clickeable
+        btnEditar.setOnClickListener {
+            inventarioAdapter.getSelectedItem()?.let { selectedItem ->
+                mostrarDialogoEditarElemento(selectedItem)
+            }
+        }
+    }
+
+
     private fun mostrarDialogoAgregarElemento() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_agregar_elemento, null)
         val etNombre: EditText = dialogView.findViewById(R.id.etNombre)
@@ -123,7 +150,12 @@ class Inventario : AppCompatActivity() {
         dialogBuilder.show()
     }
 
-    private fun guardarElementoEnBaseDeDatos(nombre: String, cantidad: Double, unidadMedida: String, precioProd: Double) {
+    private fun guardarElementoEnBaseDeDatos(
+        nombre: String,
+        cantidad: Double,
+        unidadMedida: String,
+        precioProd: Double
+    ) {
         val db = FirebaseFirestore.getInstance()
         val inventarioRef = db.collection("Inventario")
 
@@ -143,16 +175,22 @@ class Inventario : AppCompatActivity() {
                 val nuevoItem = InventarioItem(nombre, cantidad, unidadMedida, idProd, precioProd)
                 inventarioList.add(nuevoItem)
                 inventarioAdapter.actualizarLista(inventarioList)
-
+                inventarioAdapter.notifyDataSetChanged()
                 Toast.makeText(this, "Elemento agregado exitosamente", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { exception ->
-                // Manejar errores al guardar en la base de datos
+                Toast.makeText(this, "Error al actualizar el elemento", Toast.LENGTH_SHORT).show()
             }
     }
 
 
-    private fun actualizarElementoEnBaseDeDatos(idProd: String, nombre: String, cantidad: Double, unidadMedida: String, precioProd: Double) {
+    private fun actualizarElementoEnBaseDeDatos(
+        idProd: String,
+        nombre: String,
+        cantidad: Double,
+        unidadMedida: String,
+        precioProd: Double
+    ) {
         val db = FirebaseFirestore.getInstance()
         val inventarioRef = db.collection("Inventario").document(idProd)
 
@@ -161,25 +199,30 @@ class Inventario : AppCompatActivity() {
             "cantidad" to cantidad,
             "unidadMedida" to unidadMedida,
             "precioProd" to precioProd
-            // No actualizamos el precio aquí, puedes agregar lógica adicional si necesitas actualizar el precio
         )
 
         inventarioRef.update(actualizacion as Map<String, Any>)
             .addOnSuccessListener {
-                // Actualizar elemento en la lista local y en el adaptador
+                // Actualizar elemento en la lista local
                 val itemActualizado = inventarioList.find { it.idProd == idProd }
-                itemActualizado?.let {
-                    it.nombre = nombre
-                    it.cantidad = cantidad
-                    it.unidadMedida = unidadMedida
-                    it.precioProd = precioProd
-                    inventarioAdapter.actualizarLista(inventarioList)
+                itemActualizado?.apply {
+                    this.nombre = nombre
+                    this.cantidad = cantidad
+                    this.unidadMedida = unidadMedida
+                    this.precioProd = precioProd
                 }
+
+                // Notificar al adaptador de la actualización
+                inventarioAdapter.notifyDataSetChanged()
+
+                // Mostrar mensaje o realizar cualquier otra acción
+                Toast.makeText(this, "Elemento actualizado exitosamente", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { exception ->
-                // Manejar errores al actualizar en la base de datos
+                Toast.makeText(this, "Error al actualizar el elemento", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun obtenerDatosInventario() {
         val db = FirebaseFirestore.getInstance()
@@ -192,7 +235,7 @@ class Inventario : AppCompatActivity() {
                     val nombre = document.getString("nombre") ?: ""
                     val cantidad = document.getDouble("cantidad") ?: 0.0
                     val unidadMedida = document.getString("unidadMedida") ?: ""
-                    val idProd = document.getString("idProd") ?: ""
+                    val idProd = document.id // Obtener el ID del documento
                     val precioProd = document.getDouble("precioProd") ?: 0.0
 
                     val item = InventarioItem(nombre, cantidad, unidadMedida, idProd, precioProd)
@@ -204,5 +247,8 @@ class Inventario : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 // Manejar errores al obtener datos del inventario desde Firestore
+                Log.e(TAG, "Error al obtener datos del inventario: $exception")
             }
-    }}
+    }
+}
+

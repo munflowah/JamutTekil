@@ -62,6 +62,10 @@ class InventarioAdapter(
         return selectedItem
     }
 
+    fun setSelectedItem(item: InventarioItem?) {
+        selectedItem = item
+    }
+
     private class ViewHolder(view: View) {
         val nombreTextView: TextView = view.findViewById(R.id.nombreTextView)
         val cantidadTextView: TextView = view.findViewById(R.id.cantidadTextView)
