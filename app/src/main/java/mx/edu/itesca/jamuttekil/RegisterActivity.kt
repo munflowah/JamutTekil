@@ -1,5 +1,6 @@
 package mx.edu.itesca.jamuttekil
 // RegisterActivity.kt
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -83,6 +84,8 @@ class RegisterActivity : AppCompatActivity() {
                         .addOnSuccessListener {
                             Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_SHORT).show()
                             // Aquí puedes redirigir al usuario a otra actividad
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
                         }
                         .addOnFailureListener {
                             Toast.makeText(this, "Error al guardar datos adicionales.", Toast.LENGTH_SHORT).show()

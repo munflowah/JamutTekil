@@ -43,8 +43,7 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                 } else {
                     // Sign-in failed
-                    val errorMessage = task.exception?.message ?: "Error de autenticación"
-                            Toast.makeText(this, "Error: Datos Invalidos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error: Datos Invalidos", Toast.LENGTH_SHORT).show()
                 }
             }
     }

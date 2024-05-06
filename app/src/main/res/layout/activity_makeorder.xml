@@ -7,153 +7,73 @@
     android:background="#F2F2F2"
     tools:context=".MakeOrder">
 
-    <TextView
-        android:id="@+id/txtMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
-        android:layout_marginBottom="100dp"
-        android:fontFamily="@font/alata"
-        android:text="Menu de productos"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-
-
-    <ImageView
-        android:id="@+id/imgCar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="220dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/iccar"
-        tools:layout_editor_absoluteX="304dp"
-        tools:ignore="MissingConstraints" />
-
-
-    <!-- Aqui Empieza el primer bloque de venta -->
-
-    <TextView
-        android:id="@+id/txtTitleProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:fontFamily="@font/alata"
-        android:text="Chorizo de puerco\n 1 Kilogramo \n $60"
-        android:textAlignment="center"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnAgregar"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="380dp"
-        android:backgroundTint="#F28F38"
-        android:padding="5dp"
-        android:text="Agregar"
-        android:textSize="11dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/imgChorizo1"
-        android:layout_width="100dp"
+    <LinearLayout
+        android:id="@+id/ly"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:srcCompat="@drawable/chorizopaquete"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="280dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Aqui Empieza el primer bloque de venta -->
+
+            <TextView
+                android:id="@+id/txtMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/alata"
+                android:text="Menu de productos"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgCar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/iccar"
+                app:layout_constraintStart_toEndOf="@+id/txtMenu"
+                app:layout_constraintTop_toBottomOf="@+id/txtMenu" />
+
+            <TextView
+                android:id="@+id/tVCantidadCarro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                app:layout_constraintStart_toEndOf="@+id/txtMenu"
+                app:layout_constraintEnd_toStartOf="@+id/imgCar"
+                app:layout_constraintTop_toBottomOf="@+id/txtMenu" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lsProductos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ly"
+        tools:listitem="@layout/item_producto"
+        />
+
 
     <!-- Aqui termina el primer bloque de venta -->
     <!-- Aqui empieza el segundo bloque de venta -->
 
-    <TextView
-        android:id="@+id/txtTitleProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
-        android:fontFamily="@font/alata"
-        android:text="Chorizo de puerco\n 500 Gramos \n $30"
-        android:textAlignment="center"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="DuplicateIds" />
-
-    <Button
-        android:id="@+id/btnAgregar"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="280dp"
-        android:backgroundTint="#F28F38"
-        android:padding="5dp"
-        android:text="Agregar"
-        android:textSize="11dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="DuplicateIds" />
-
-    <ImageView
-        android:id="@+id/imgChorizo2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/chorizopaquete"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="380dp"
-        tools:ignore="MissingConstraints" />
-
     <!-- Aqui termina el segundo bloque de venta -->
     <!-- Aqui empieza el tercer bloque de venta -->
-
-    <TextView
-        android:id="@+id/txtTitleProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:fontFamily="@font/alata"
-        android:text="Chorizo de puerco\n 250 Gramos \n $15"
-        android:textAlignment="center"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="DuplicateIds" />
-
-    <Button
-        android:id="@+id/btnAgregar"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="180dp"
-        android:backgroundTint="#F28F38"
-        android:padding="5dp"
-        android:text="Agregar"
-        android:textSize="11dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="DuplicateIds" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/chorizopaquete"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="480dp"
-        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

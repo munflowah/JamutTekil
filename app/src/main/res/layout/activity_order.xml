@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/whitebone"
-    tools:context=".Order">
+    tools:context=".MenuOrders">
 
     <TextView
         android:id="@+id/txtOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="98dp"
-        android:layout_marginBottom="51dp"
         android:fontFamily="@font/alata"
-        android:text="Ordenes"
-        android:textSize="40dp"
+        android:text="Pedidos"
+        android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,20 +24,24 @@
         android:id="@+id/btnDoOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="282dp"
         android:backgroundTint="#F28F38"
         android:text="Hacer Pedido"
-        android:textSize="20dp"
-        tools:layout_editor_absoluteX="119dp"
-        tools:layout_editor_absoluteY="282dp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnSeeOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="7dp"
         android:backgroundTint="#F28F38"
         android:text="Ver pedidos"
-        android:textSize="20dp"
-        tools:layout_editor_absoluteX="127dp"
-        tools:layout_editor_absoluteY="358dp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/btnDoOrder"
+        app:layout_constraintTop_toBottomOf="@+id/btnDoOrder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
