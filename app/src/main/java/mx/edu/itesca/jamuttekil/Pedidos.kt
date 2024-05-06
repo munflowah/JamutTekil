@@ -9,8 +9,8 @@ class Pedidos  : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_orders)
 
-
-
+        val intent = intent
+        val carroCompras = intent.getSerializableExtra("carro_compras") as? ArrayList<Producto>
 
     }
 

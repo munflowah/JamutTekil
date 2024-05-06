@@ -30,13 +30,13 @@
         app:layout_constraintBottom_toTopOf="@+id/btnEditOrders"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ListView
             android:layout_width="300dp"
             android:layout_height="400dp"
-            android:layout_marginTop="100dp" />
+            android:layout_marginTop="100dp"
+            tools:listitem="@layout/item_carrito"/>
 
     </LinearLayout>
 
