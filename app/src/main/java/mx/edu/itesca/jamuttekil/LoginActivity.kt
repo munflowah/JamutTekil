@@ -1,4 +1,5 @@
 package mx.edu.itesca.jamuttekil
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -32,20 +33,43 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
     private fun loginUser(email: String, password: String) {
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign-in successful
                     Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
-                    // Aquí puedes redirigir a otra actividad si el inicio de sesión es exitoso
-                    val intent = Intent(this, MenuActivity::class.java)
-                    startActivity(intent)
+
+                    // Obtener el tipo de usuario del usuario actualmente autenticado
+                    val currentUser = mAuth.currentUser
+                    currentUser?.let {
+                        val tipoUsuario = obtenerTipoUsuario(currentUser.uid)
+                        // Aquí puedes redirigir a otra actividad según el tipo de usuario
+                        if (tipoUsuario == "admin") {
+                            val intent = Intent(this, MenuActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            val intent = Intent(this, MenuActivityUser::class.java)
+                            startActivity(intent)
+                        }
+                        finish() // Cerrar esta actividad para que no pueda volver atrás
+                    }
                 } else {
                     // Sign-in failed
                     val errorMessage = task.exception?.message ?: "Error de autenticación"
-                            Toast.makeText(this, "Error: Datos Invalidos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun obtenerTipoUsuario(userId: String): String {
+        // Verificar si el userId coincide con algún ID de usuario administrador predefinido
+        // Si coincide, retornar "admin", de lo contrario, retornar "normal"
+        return if (userId in listOf("B68D4oO74TbzXfXlokkhnkYQ5z62")) {
+            "admin"
+        } else {
+            "normal"
+        }
     }
 }
