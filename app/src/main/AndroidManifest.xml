@@ -29,8 +29,8 @@
         <activity android:name=".MenuActivityUser" />
         <activity android:name=".Inventario"/>
         <activity android:name=".Pedidos"/>
-        <activity android:name=".Productos" />
-
+        <activity android:name=".Producto" />
+        <activity android:name=".ProductoAdapter" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

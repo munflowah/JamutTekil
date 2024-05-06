@@ -4,11 +4,11 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import mx.edu.itesca.jamuttekil.databinding.ActivityMakeorderBinding
+//import mx.edu.itesca.jamuttekil.databinding.ActivityMakeorderBinding
 import org.json.JSONArray
 
 class MakeOrder : AppCompatActivity() {
-    private lateinit var binding: ActivityMakeorderBinding
+    /*private lateinit var binding: ActivityMakeorderBinding
     private lateinit var adapter: AdaptadorProducto
 
     var listaProductos = ArrayList<Producto>()
@@ -55,5 +55,5 @@ class MakeOrder : AppCompatActivity() {
                 )
             }
         }
-    }
+    }*/
 }

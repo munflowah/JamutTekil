@@ -22,6 +22,11 @@ class MenuActivity : AppCompatActivity() {
             startActivity(intent)
 
         }
+        val buttonProductos = findViewById<Button>(R.id.btnProductos)
+        buttonProductos.setOnClickListener {
+            val intent = Intent(this, ListaProductos::class.java)
+
+        }
 
 
     }
