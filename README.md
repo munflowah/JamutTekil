@@ -6,6 +6,15 @@ grupojamuttekil@gmail.com
 ## Contraseña: 
 @Chorizo2024
 
+## Para iniciar sesion como admin este es el correo y contraseña
+prueba@admin.com
+123456
+
+Solamente se puede iniciar en administrador con esa cuenta, las demas automaticamente 
+se registran como usuario normal, si se requiere cambiar a admin se cambia el tipoUser en 
+la base de datos.
+
+
 ## Requisitos Previos
 
 - [Git](https://git-scm.com/) debe estar instalado.
