@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgProducto"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="8dp"
+        android:layout_marginStart="322dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/chorizopaquete" />
+
+    <TextView
+        android:id="@+id/nombreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toStartOf="@id/imgProducto" />
+
+    <TextView
+        android:id="@+id/cantidadTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/nombreTextView"
+        android:layout_toStartOf="@id/imgProducto" />
+
+    <TextView
+        android:id="@+id/idProdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/cantidadTextView"
+        android:layout_toStartOf="@id/imgProducto" />
+
+    <TextView
+        android:id="@+id/precioProdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/idProdTextView"
+        android:layout_toStartOf="@id/imgProducto" />
+    <TextView
+        android:id="@+id/descripTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/idProdTextView"
+        android:layout_toStartOf="@id/imgProducto" />
+
+</RelativeLayout>
