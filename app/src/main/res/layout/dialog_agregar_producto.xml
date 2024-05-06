@@ -12,10 +12,15 @@
         android:hint="Nombre del elemento" />
 
     <EditText
-        android:id="@+id/etCantidad"
+        android:id="@+id/etCantidadG"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Cantidad" />
+    <EditText
+        android:id="@+id/etDescrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripcion" />
 
     <EditText
         android:id="@+id/etUnidadMedida"
@@ -31,26 +36,35 @@
         android:hint="ID de producto" />
 
     <EditText
-        android:id="@+id/etPrecioProd"
+        android:id="@+id/etPrecio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Precio de producto" />
+
+    <!-- Botón para cargar una imagen desde el dispositivo -->
+
+    <!-- Espacio para mostrar la imagen seleccionada -->
+    <ImageView
+        android:id="@+id/ivImagenSeleccionada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btnCargarImagen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/green"
-
         android:text="Cargar Imagen" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnGuardarElemento"
+            android:id="@+id/btnGuardar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"
@@ -67,7 +81,8 @@
             android:backgroundTint="@color/rojo"
             android:text="Eliminar" />
 
-    </LinearLayout>
 
+
+    </LinearLayout>
 
 </LinearLayout>
