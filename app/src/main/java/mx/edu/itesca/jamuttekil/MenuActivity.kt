@@ -1,8 +1,9 @@
 package mx.edu.itesca.jamuttekil
+
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class MenuActivity : AppCompatActivity() {
@@ -11,25 +12,23 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-        val buttonOrders = findViewById<Button>(R.id.btnInventory)
-        buttonOrders.setOnClickListener {
-            val intent = Intent(this, Inventario::class.java)
-            startActivity(intent)
-        }
-        val buttonInventory = findViewById<Button>(R.id.btnOrder)
+        val buttonInventory = findViewById<Button>(R.id.btnInventory)
         buttonInventory.setOnClickListener {
             val intent = Intent(this, Inventario::class.java)
             startActivity(intent)
-
         }
+
+        val buttonOrders = findViewById<Button>(R.id.btnOrder)
+        buttonOrders.setOnClickListener {
+            val intent = Intent(this, Pedidos::class.java)
+            startActivity(intent)
+        }
+
+
         val buttonProductos = findViewById<Button>(R.id.btnProductos)
         buttonProductos.setOnClickListener {
             val intent = Intent(this, ListaProductos::class.java)
-
+            startActivity(intent)
         }
-
-
     }
 }
-
-

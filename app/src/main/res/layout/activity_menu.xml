@@ -44,7 +44,7 @@
         tools:ignore="MissingConstraints">
 
         <Button
-            android:id="@+id/btnOrder"
+            android:id="@+id/btnInventory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/whitebone"
@@ -59,7 +59,7 @@
             tools:layout_editor_absoluteY="247dp" />
 
         <Button
-            android:id="@+id/btnInventory"
+            android:id="@+id/btnOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/whitebone"
