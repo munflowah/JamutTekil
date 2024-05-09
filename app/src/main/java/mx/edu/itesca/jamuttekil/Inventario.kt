@@ -49,7 +49,6 @@ class Inventario : AppCompatActivity() {
         inventarioAdapter = InventarioAdapter(this, inventarioList)
         listView.adapter = inventarioAdapter
 
-
         // Obtener datos del inventario desde Firestore y mostrarlos en el ListView
         obtenerDatosInventario()
 

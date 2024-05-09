@@ -44,7 +44,7 @@
         tools:ignore="MissingConstraints">
 
         <Button
-            android:id="@+id/btnProductos"
+            android:id="@+id/btnProductoss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

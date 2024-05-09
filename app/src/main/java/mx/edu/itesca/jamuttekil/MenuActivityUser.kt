@@ -18,11 +18,11 @@ class MenuActivityUser : AppCompatActivity() {
             startActivity(intent)
 
         }
-        val buttonProductos = findViewById<Button>(R.id.btnProductos)
+        /*val buttonProductos = findViewById<Button>(R.id.btnProductos)
         buttonProductos.setOnClickListener {
-            val intent = Intent(this, ListaProductos::class.java)
+            val intent = Intent(this, Pedidos::class.java)
 
-        }
+        }*/
 
 
     }

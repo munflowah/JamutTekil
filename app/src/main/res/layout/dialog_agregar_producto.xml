@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    >
 
     <EditText
         android:id="@+id/etNombre"
@@ -21,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Descripcion" />
-
+<!--
     <EditText
         android:id="@+id/etUnidadMedida"
         android:layout_width="match_parent"
@@ -33,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:hint="ID de producto" />
+        android:hint="ID de producto" />-->
 
     <EditText
         android:id="@+id/etPrecio"
@@ -51,12 +54,22 @@
         android:layout_marginTop="16dp"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/btnCargarImagen"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/uploadImageView"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/all"
+        app:srcCompat="@drawable/ic_upload_file"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Cargar Imagen" />
+        android:text="@string/upload"
+        android:layout_gravity="center"
+        android:textSize="22sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import mx.edu.itesca.jamuttekil.Producto
 import mx.edu.itesca.jamuttekil.R
 
@@ -34,7 +35,7 @@ class ProductoAdapter(
         val holder: ViewHolder
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_producto, parent, false)
+            view = LayoutInflater.from(context).inflate(R.layout.item_prod, parent, false)
             holder = ViewHolder(view)
             view.tag = holder
         } else {
@@ -43,13 +44,20 @@ class ProductoAdapter(
 
         val item = productoList[position]
         holder.nombreTextView.text = item.nombre
-        holder.cantidadTextView.text = "${item.cantidadG}"
+        holder.cantidadTextView.text = "Cantidad: ${item.cantidadG}"
         holder.idProdTextView.text = "ID: ${item.idProd}"
         holder.precioProdTextView.text = "Precio: $${item.precio}"
-        // Aquí configura la imagen según la lógica de tu aplicación
-        holder.imgProducto.setImageResource(item.img)
+        holder.descrip.text = "Descripción: ${item.descrip}"
+
+        Glide.with(context)
+            .load(item.img) // Aquí usamos la URL de la imagen del InventarioItem
+            .placeholder(R.drawable.app) // Placeholder mientras se carga la imagen
+            .error(R.drawable.caja) // Imagen de error si no se puede cargar la imagen
+            .centerCrop() // Escala centrada para el ImageView
+            .into(holder.imgProducto) // Cargar la imagen en el ImageView
 
         return view!!
+
     }
 
     fun actualizarLista(nuevaLista: List<Producto>) {
@@ -75,5 +83,8 @@ class ProductoAdapter(
         val idProdTextView: TextView = view.findViewById(R.id.idProdTextView)
         val precioProdTextView: TextView = view.findViewById(R.id.precioProdTextView)
         val imgProducto: ImageView = view.findViewById(R.id.imgProducto)
+        val descrip: TextView = view.findViewById(R.id.descripTextView)
     }
 }
+
+

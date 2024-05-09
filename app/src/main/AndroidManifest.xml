@@ -32,12 +32,15 @@
         <activity android:name=".Pedidos"/>
         <activity android:name=".Producto" />
         <activity android:name=".ProductoAdapter" />
+        <activity android:name=".ListaProductos" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
 
 </manifest>
