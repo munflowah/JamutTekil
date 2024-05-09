@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
     private fun obtenerTipoUsuario(userId: String): String {
         // Verificar si el userId coincide con algún ID de usuario administrador predefinido
         // Si coincide, retornar "admin", de lo contrario, retornar "normal"
-        return if (userId in listOf("B68D4oO74TbzXfXlokkhnkYQ5z62")) {
+        return if (userId in listOf("B68D4oO74TbzXfXlokkhnkYQ5z62", "DGwJHD98gUgpNxtqWTI3pF4wbv13", "3kspqCXWP4YrFQnm1KozZSWsJ1i2", "OFZuIgHugwboJs2ryQGNhpLgCCb2")) {
             "admin"
         } else {
             "normal"
