@@ -3,7 +3,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import mx.edu.itesca.jamuttekil.InventarioItem
 import mx.edu.itesca.jamuttekil.R
 
@@ -12,7 +14,6 @@ class InventarioAdapter(
     private var inventarioList: List<InventarioItem>,
     private var onEditClickListener: ((InventarioItem) -> Unit)? = null,
     private var selectedItem: InventarioItem? = null
-
 ) : BaseAdapter() {
 
     override fun getCount(): Int {
@@ -45,7 +46,13 @@ class InventarioAdapter(
         holder.idProdTextView.text = "ID: ${item.idProd}"
         holder.precioProdTextView.text = "Precio: $${item.precioProd}"
 
-
+        // Cargar la imagen en el ImageView
+        Glide.with(context)
+            .load(item.imagenUrl) // Aquí usamos la URL de la imagen del InventarioItem
+            .placeholder(R.drawable.app) // Placeholder mientras se carga la imagen
+            .error(R.drawable.caja) // Imagen de error si no se puede cargar la imagen
+            .centerCrop() // Escala centrada para el ImageView
+            .into(holder.imagenProducto) // Cargar la imagen en el ImageView
 
         return view!!
     }
@@ -54,6 +61,7 @@ class InventarioAdapter(
         inventarioList = nuevaLista
         notifyDataSetChanged()
     }
+
     fun setOnEditClickListener(listener: (InventarioItem) -> Unit) {
         onEditClickListener = listener
     }
@@ -71,5 +79,6 @@ class InventarioAdapter(
         val cantidadTextView: TextView = view.findViewById(R.id.cantidadTextView)
         val idProdTextView: TextView = view.findViewById(R.id.idProdTextView)
         val precioProdTextView: TextView = view.findViewById(R.id.precioProdTextView)
+        val imagenProducto: ImageView = view.findViewById(R.id.imagenProducto) // ImageView para la imagen del producto
     }
 }

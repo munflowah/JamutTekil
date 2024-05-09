@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -22,13 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Unidad de medida" />
-
+<!--
     <EditText
         android:id="@+id/etIdProd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:hint="ID de producto" />
+        android:hint="ID de producto" /> -->
 
     <EditText
         android:id="@+id/etPrecioProd"
@@ -36,14 +38,33 @@
         android:layout_height="wrap_content"
         android:hint="Precio de producto" />
 
-    <Button
-        android:id="@+id/btnCargarImagen"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/green"
+        android:orientation="vertical"
+        android:layout_marginLeft="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:ignore="UseCompoundDrawables">
 
-        android:text="Cargar Imagen" />
+        <ImageView
+            android:id="@+id/uploadImageView"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/all"
+            app:srcCompat="@drawable/ic_upload_file"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="22sp"
+            android:text="@string/upload" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,9 +74,9 @@
             android:id="@+id/btnGuardarElemento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="85dp"
             android:layout_marginTop="16dp"
-            android:backgroundTint="@color/orange"
+            android:backgroundTint="@color/green"
             android:text="Guardar" />
 
         <Button
