@@ -214,7 +214,7 @@ class ListaProductos : AppCompatActivity() {
             val precio = etPrecio.text.toString().toDoubleOrNull() ?: 0.0
 
             // Actualizar elemento en la base de datos y en la lista local
-            actualizarElementoEnBaseDeDatos(nombre, cantidadG, descrip, null, precio, item.idProd)
+            actualizarProductoEnBaseDeDatos(nombre, cantidadG, descrip, null, precio, item.idProd)
             dialogBuilder.dismiss()
         }
         //aqui se usa el listener para llamar a las funciones de eliminar
@@ -268,36 +268,9 @@ class ListaProductos : AppCompatActivity() {
                 Toast.makeText(this, "Error al guardar el producto", Toast.LENGTH_SHORT).show()
             }
     }
-    private fun subirImagenAServer(imagenUri: Uri, idProd: String) {
-        // Obtener una referencia al Firebase Storage
-        val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference
 
-        // Crear una referencia al archivo en Firebase Storage
-        val fileRef: StorageReference = storageRef.child("images/$idProd.jpg") // Cambiar la extensión según el formato de tu imagen
 
-        // Subir la imagen al Firebase Storage
-        fileRef.putFile(imagenUri)
-            .addOnSuccessListener { taskSnapshot ->
-                // Imagen subida exitosamente
-                // Obtener la URL de descarga de la imagen
-                fileRef.downloadUrl.addOnSuccessListener { uri ->
-                    // Aquí puedes guardar la URL de la imagen en la base de datos
-                    val img = uri.toString()
-                    // Por ejemplo, actualizando la URL en el documento del producto
-                    actualizarUrlImagenEnInventario(idProd, img)
-                }.addOnFailureListener { exception ->
-                    // Manejar errores al obtener la URL de descarga de la imagen
-                    Log.e(TAG, "Error al obtener la URL de descarga de la imagen: $exception")
-                }
-            }
-            .addOnFailureListener { exception ->
-                // Manejar errores al subir la imagen al Firebase Storage
-                Log.e(TAG, "Error al subir la imagen al Firebase Storage: $exception")
-            }
-    }
-
-    private fun actualizarElementoEnBaseDeDatos(
+    private fun actualizarProductoEnBaseDeDatos(
         nombre: String,
         cantidadG: String,
         descrip: String,
@@ -306,7 +279,7 @@ class ListaProductos : AppCompatActivity() {
         idProd: String
     ) {
         val db = FirebaseFirestore.getInstance()
-        val productoRef = db.collection("Producto").document(idProd)
+        val productoRef = db.collection("Productos").document(idProd)
 
         val actualizacion = hashMapOf(
             "nombre" to nombre,
@@ -336,12 +309,40 @@ class ListaProductos : AppCompatActivity() {
                 Toast.makeText(this, "Error al actualizar el elemento", Toast.LENGTH_SHORT).show()
             }
     }
+    private fun subirImagenAServer(imagenUri: Uri, idProd: String) {
+        // Obtener una referencia al Firebase Storage
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.reference
+
+        // Crear una referencia al archivo en Firebase Storage
+        val fileRef: StorageReference = storageRef.child("images/$idProd.jpg") // Cambiar la extensión según el formato de tu imagen
+
+        // Subir la imagen al Firebase Storage
+        fileRef.putFile(imagenUri)
+            .addOnSuccessListener { taskSnapshot ->
+                // Imagen subida exitosamente
+                // Obtener la URL de descarga de la imagen
+                fileRef.downloadUrl.addOnSuccessListener { uri ->
+                    // Aquí puedes guardar la URL de la imagen en la base de datos
+                    val img = uri.toString()
+                    // Por ejemplo, actualizando la URL en el documento del producto
+                    actualizarUrlImagenEnInventario(idProd, img)
+                }.addOnFailureListener { exception ->
+                    // Manejar errores al obtener la URL de descarga de la imagen
+                    Log.e(TAG, "Error al obtener la URL de descarga de la imagen: $exception")
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Manejar errores al subir la imagen al Firebase Storage
+                Log.e(TAG, "Error al subir la imagen al Firebase Storage: $exception")
+            }
+    }
     private fun mostrarConfirmacionEliminar(idProd: String) {
         val confirmacionDialog = AlertDialog.Builder(this)
             .setTitle("Confirmar Eliminación")
             .setMessage("¿Estás seguro de que deseas eliminar este elemento?")
             .setPositiveButton("Sí") { _, _ ->
-                eliminarElemento(idProd)
+                eliminarProducto(idProd)
             }
             .setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
@@ -350,24 +351,7 @@ class ListaProductos : AppCompatActivity() {
 
         confirmacionDialog.show()
     }
-    private fun eliminarElemento(idProd: String) {
-        val db = FirebaseFirestore.getInstance()
-        val productoRef = db.collection("Producto").document(idProd)
 
-        productoRef.delete()
-            .addOnSuccessListener {
-                // Eliminar el elemento de la lista local y actualizar el adaptador
-                val itemEliminado = productoList.find { it.idProd == idProd }
-                itemEliminado?.let {
-                    productoList.remove(it)
-                    productoAdapter.actualizarLista(productoList)
-                }
-                Toast.makeText(this, "Elemento eliminado exitosamente", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error al eliminar el elemento", Toast.LENGTH_SHORT).show()
-            }
-    }
     fun fileUpload() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
