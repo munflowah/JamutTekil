@@ -12,18 +12,18 @@ class MenuActivityUser : AppCompatActivity() {
         setContentView(R.layout.activity_menu_user)
 
 
-        val buttonInventory = findViewById<Button>(R.id.btnOrder)
+        val buttonInventory = findViewById<Button>(R.id.btnProductoss)
         buttonInventory.setOnClickListener {
             val intent = Intent(this, Pedidos::class.java)
             startActivity(intent)
 
         }
-        /*val buttonProductos = findViewById<Button>(R.id.btnProductos)
-        buttonProductos.setOnClickListener {
-            val intent = Intent(this, Pedidos::class.java)
+        val buttonProductoss = findViewById<Button>(R.id.btnOrder)
+        buttonProductoss.setOnClickListener {
+            val intent = Intent(this, Ordenes::class.java)
+            startActivity(intent)
 
-        }*/
-
+        }
 
     }
 }
