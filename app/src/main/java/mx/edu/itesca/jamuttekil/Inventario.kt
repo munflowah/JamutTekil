@@ -1,7 +1,7 @@
+
 package mx.edu.itesca.jamuttekil
 
 import InventarioAdapter
-import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
@@ -349,38 +349,6 @@ class Inventario : AppCompatActivity() {
             }
     }
 
-
-    private fun subirImagenAServer(imagenUri: Uri, idProd: String) {
-        // Obtener una referencia al Firebase Storage
-        val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference
-
-        // Crear una referencia al archivo en Firebase Storage
-        val fileRef: StorageReference = storageRef.child("images/$idProd.jpg") // Cambiar la extensión según el formato de tu imagen
-
-        // Subir la imagen al Firebase Storage
-        fileRef.putFile(imagenUri)
-            .addOnSuccessListener { taskSnapshot ->
-                // Imagen subida exitosamente
-                // Obtener la URL de descarga de la imagen
-                fileRef.downloadUrl.addOnSuccessListener { uri ->
-                    // Aquí puedes guardar la URL de la imagen en la base de datos
-                    val imageUrl = uri.toString()
-                    // Por ejemplo, actualizando la URL en el documento del producto
-                    actualizarUrlImagenEnInventario(idProd, imageUrl)
-                }.addOnFailureListener { exception ->
-                    // Manejar errores al obtener la URL de descarga de la imagen
-                    Log.e(TAG, "Error al obtener la URL de descarga de la imagen: $exception")
-                }
-            }
-            .addOnFailureListener { exception ->
-                // Manejar errores al subir la imagen al Firebase Storage
-                Log.e(TAG, "Error al subir la imagen al Firebase Storage: $exception")
-            }
-    }
-
-
-
     private fun actualizarElementoEnBaseDeDatos(
         idProd: String,
         nombre: String,
@@ -482,43 +450,6 @@ class Inventario : AppCompatActivity() {
                 Toast.makeText(this, "Error al eliminar el elemento", Toast.LENGTH_SHORT).show()
             }
     }
-
-    private fun subirImagenFirebase() {
-        val imagenUri = this.imagenUri // Obtener la URI de la imagen desde la variable de clase
-
-        if (imagenUri != null) {
-            val storage = FirebaseStorage.getInstance()
-            val storageRef = storage.reference
-            val idProd = idProdActual ?: return // Obtener el idProd actual o salir si es nulo
-
-            // Crear una referencia al archivo en Firebase Storage
-            val fileRef: StorageReference = storageRef.child("Imagenes/$idProd.jpg") // Cambiar la extensión según el formato de tu imagen
-
-            // Subir la imagen al Firebase Storage
-            fileRef.putFile(imagenUri)
-                .addOnSuccessListener { taskSnapshot ->
-                    // Imagen subida exitosamente
-                    // Obtener la URL de descarga de la imagen
-                    fileRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Actualizar la URL de la imagen en la base de datos
-                        val imageUrl = uri.toString()
-                        actualizarUrlImagenEnInventario(idProd, imageUrl)
-                    }.addOnFailureListener { exception ->
-                        // Manejar errores al obtener la URL de descarga de la imagen
-                        Log.e(TAG, "Error al obtener la URL de descarga de la imagen: $exception")
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    // Manejar errores al subir la imagen al Firebase Storage
-                    Log.e(TAG, "Error al subir la imagen al Firebase Storage: $exception")
-                }
-        } else {
-            Toast.makeText(this, "Error: La URI de la imagen es nula", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
-
     private fun actualizarUrlImagenEnInventario(idProd: String, imageUrl: String) {
         // Buscar el InventarioItem correspondiente y actualizar su URL de imagen
         val item = inventarioList.find { it.idProd == idProd }
@@ -527,8 +458,4 @@ class Inventario : AppCompatActivity() {
             inventarioAdapter.notifyDataSetChanged() // Notificar al adaptador sobre el cambio
         }
     }
-
-
-
-
-}
+    }
