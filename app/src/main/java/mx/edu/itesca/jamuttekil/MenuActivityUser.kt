@@ -14,7 +14,7 @@ class MenuActivityUser : AppCompatActivity() {
 
         val buttonInventory = findViewById<Button>(R.id.btnProductoss)
         buttonInventory.setOnClickListener {
-            val intent = Intent(this, Pedidos::class.java)
+            val intent = Intent(this, MenuProductosActivity::class.java)
             startActivity(intent)
 
         }

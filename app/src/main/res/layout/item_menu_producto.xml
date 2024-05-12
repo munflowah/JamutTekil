@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/imgProducto"
@@ -35,8 +35,6 @@
             android:text="Cantidad: "
             />
 
-
-
         <TextView
             android:id="@+id/idProdTextView"
             android:layout_width="wrap_content"
@@ -61,6 +59,16 @@
             android:text="Descripción: "
             />
 
+        <Button
+            android:id="@+id/btnAgregar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/green"
+            />
+
 
     </LinearLayout>
+
 </LinearLayout>

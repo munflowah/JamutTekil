@@ -35,6 +35,10 @@
         <activity android:name=".ListaProductos" />
         <activity android:name=".PedidoUser"/>
         <activity android:name=".Ordenes" />
+        <activity android:name=".MenuProductosActivity" />
+        <activity android:name=".MenuProductoAdapter" />
+        <activity android:name=".Carrito" />
+        <activity android:name=".CarritoAdapter" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
