@@ -36,15 +36,17 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/etFiltroP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Buscar elemento..."
-            android:inputType="text"
             android:imeOptions="actionDone"
+            android:inputType="text"
+            android:padding="8dp"
             android:singleLine="true"
-            android:padding="8dp" />
+            tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>
 

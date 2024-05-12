@@ -3,6 +3,7 @@ package mx.edu.itesca.jamuttekil
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -23,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import java.util.HashMap
 
 class ListaProductos : AppCompatActivity() {
 
@@ -33,9 +36,8 @@ class ListaProductos : AppCompatActivity() {
     private val File = 1
     private val database = Firebase.database
     val myRef = database.getReference("Imagenes")
-    val REQUEST_CODE_GALLERY = 0
-    private var idProdActual: String? = null
-    private var imagenUri: Uri? = null
+    private var imgURL : String? = null
+    private var callback: ((String) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +85,9 @@ class ListaProductos : AppCompatActivity() {
                 mostrarDialogoEditarElemento(selectedItem)
             }
         }
+
         val etFiltro: EditText = findViewById(R.id.etFiltroP)
+
         etFiltro.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -99,20 +103,19 @@ class ListaProductos : AppCompatActivity() {
         manejarSeleccionElemento()
     }
     //AQUI SON METODOS DEL FILTRO
-    // Función para filtrar la lista por nombre del elemento
+    // Lista para almacenar los productos filtrados
+    private var productoListFiltrada: MutableList<Producto> = mutableListOf()
+
     private fun filtrarLista(nombreFiltro: String) {
-        val listaFiltrada = if (nombreFiltro.isNotBlank()) {
-            obtenerListaCompleta().filter { item ->
+        productoListFiltrada = if (nombreFiltro.isNotBlank()) {
+            productoList.filter { item ->
                 item.nombre.contains(nombreFiltro, ignoreCase = true)
-            }
+            }.toMutableList()
         } else {
-            obtenerListaCompleta()
+            productoList
         }
-        actualizarLista(listaFiltrada)
+        actualizarLista(productoListFiltrada)
     }
-
-
-
     private fun mostrarListaCompleta() {
         val listaCompleta: List<Producto> = obtenerListaCompleta()
         actualizarLista(listaCompleta)
@@ -123,9 +126,8 @@ class ListaProductos : AppCompatActivity() {
     }
 
     private fun actualizarLista(nuevaLista: List<Producto>) {
-        productoList = nuevaLista.toMutableList()
         // Actualizar el adaptador de la lista
-        productoAdapter.actualizarLista(productoList)
+        productoAdapter.actualizarLista(nuevaLista)
     }
 //FIN DE FILTRO
 
@@ -153,6 +155,16 @@ class ListaProductos : AppCompatActivity() {
         val etDescrip: EditText = dialogView.findViewById(R.id.etDescrip)
         val etPrecio: EditText = dialogView.findViewById(R.id.etPrecio)
         val btnGuardar: Button = dialogView.findViewById(R.id.btnGuardar)
+        val agregarImagen: ImageView = dialogView.findViewById(R.id.uploadImageView)
+
+        agregarImagen.setOnClickListener {
+            btnGuardar.isEnabled = false
+
+            fileUpload{url ->
+                imgURL = url
+                btnGuardar.isEnabled = true
+            }
+        }
 
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -166,10 +178,12 @@ class ListaProductos : AppCompatActivity() {
             val descrip = etDescrip.text.toString().trim()
             val precio = etPrecio.text.toString().toDoubleOrNull() ?: 0.0
 
-            if (imagenUri != null) {
-                subirImagenFirebase()
+            val localImgURL = imgURL
+
+            if (localImgURL != null) {
+                guardarProductoEnBaseDeDatos(nombre, cantidadG, descrip, localImgURL, precio)
             } else {
-                guardarProductoEnBaseDeDatos(nombre, cantidadG, descrip, null, precio)
+                guardarProductoSinImagenEnBaseDeDatos(nombre, cantidadG, descrip, null, precio)
             }
 
             dialogBuilder.dismiss()
@@ -178,6 +192,35 @@ class ListaProductos : AppCompatActivity() {
         dialogBuilder.show()
     }
 
+    fun fileUpload(callback: (String) -> Unit) {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        startActivityForResult(intent, File)
+        this.callback = callback
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == File) {
+            if (resultCode == RESULT_OK) {
+                val FileUri = data!!.data
+                val Folder: StorageReference =
+                    FirebaseStorage.getInstance().getReference().child("Productos")
+                val file_name: StorageReference = Folder.child("file" + FileUri!!.lastPathSegment)
+                file_name.putFile(FileUri).addOnSuccessListener { taskSnapshot ->
+                    file_name.getDownloadUrl().addOnSuccessListener { uri ->
+                        val hashMap =
+                            HashMap<String, String>()
+                        hashMap["link"] = java.lang.String.valueOf(uri)
+                        myRef.setValue(hashMap)
+                        imgURL = uri.toString()
+                        Log.d("Mensaje", "Se subió correctamente")
+                        callback?.invoke(uri.toString())
+                    }
+                }
+            }
+        }
+    }
 
     private fun mostrarDialogoEditarElemento(item: Producto) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_agregar_producto, null)
@@ -189,17 +232,12 @@ class ListaProductos : AppCompatActivity() {
         val btnEliminarElemento: Button = dialogView.findViewById(R.id.btnEliminarElemento)
         val uploadImageView: ImageView = dialogView.findViewById(R.id.uploadImageView)
 
-
-
         // Rellenar los EditTexts con los datos del elemento seleccionado
         etNombre.setText(item.nombre)
         etCantidadG.setText(item.cantidadG.toString())
         etDescrip.setText(item.descrip)
         etPrecio.setText(item.precio.toString())
-
-
         Glide.with(this).load(item.img).into(uploadImageView)
-
 
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -222,19 +260,11 @@ class ListaProductos : AppCompatActivity() {
             mostrarConfirmacionEliminar(item.idProd)
             dialogBuilder.dismiss() // Cerrar el diálogo de editar después de eliminar
         }
-        uploadImageView.setOnClickListener {
-            seleccionarNuevaImagenParaElemento(uploadImageView)
-        }
-
         dialogBuilder.show()
     }
 
-    private fun seleccionarNuevaImagenParaElemento(imageView: ImageView) {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
-        startActivityForResult(intent, REQUEST_CODE_GALLERY)
-    }
-    private fun guardarProductoEnBaseDeDatos(
+    private fun guardarProductoSinImagenEnBaseDeDatos(
         nombre: String,
         cantidadG: String,
         descrip: String,
@@ -269,6 +299,40 @@ class ListaProductos : AppCompatActivity() {
             }
     }
 
+    private fun guardarProductoEnBaseDeDatos(
+        nombre: String,
+        cantidadG: String,
+        descrip: String,
+        img: String,
+        precio: Double
+    ) {
+        val db = FirebaseFirestore.getInstance()
+        val productosRef = db.collection("Productos")
+
+        val nuevoProducto = hashMapOf(
+            "nombre" to nombre,
+            "cantidadG" to cantidadG,
+            "descrip" to descrip,
+            "precio" to precio,
+            "img" to img
+        )
+
+        productosRef.add(nuevoProducto)
+            .addOnSuccessListener { documentReference ->
+                // Obtener ID del nuevo producto creado en la base de datos
+                val idProd = documentReference.id
+
+                val nuevoItem = Producto(cantidadG, descrip, img, nombre, precio, idProd)
+                productoList.add(nuevoItem)
+                productoAdapter.actualizarLista(productoList)
+                productoAdapter.notifyDataSetChanged()
+
+                Toast.makeText(this, "Producto agregado exitosamente", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al guardar el producto", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     private fun actualizarProductoEnBaseDeDatos(
         nombre: String,
@@ -309,34 +373,6 @@ class ListaProductos : AppCompatActivity() {
                 Toast.makeText(this, "Error al actualizar el elemento", Toast.LENGTH_SHORT).show()
             }
     }
-    private fun subirImagenAServer(imagenUri: Uri, idProd: String) {
-        // Obtener una referencia al Firebase Storage
-        val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference
-
-        // Crear una referencia al archivo en Firebase Storage
-        val fileRef: StorageReference = storageRef.child("images/$idProd.jpg") // Cambiar la extensión según el formato de tu imagen
-
-        // Subir la imagen al Firebase Storage
-        fileRef.putFile(imagenUri)
-            .addOnSuccessListener { taskSnapshot ->
-                // Imagen subida exitosamente
-                // Obtener la URL de descarga de la imagen
-                fileRef.downloadUrl.addOnSuccessListener { uri ->
-                    // Aquí puedes guardar la URL de la imagen en la base de datos
-                    val img = uri.toString()
-                    // Por ejemplo, actualizando la URL en el documento del producto
-                    actualizarUrlImagenEnInventario(idProd, img)
-                }.addOnFailureListener { exception ->
-                    // Manejar errores al obtener la URL de descarga de la imagen
-                    Log.e(TAG, "Error al obtener la URL de descarga de la imagen: $exception")
-                }
-            }
-            .addOnFailureListener { exception ->
-                // Manejar errores al subir la imagen al Firebase Storage
-                Log.e(TAG, "Error al subir la imagen al Firebase Storage: $exception")
-            }
-    }
     private fun mostrarConfirmacionEliminar(idProd: String) {
         val confirmacionDialog = AlertDialog.Builder(this)
             .setTitle("Confirmar Eliminación")
@@ -352,73 +388,6 @@ class ListaProductos : AppCompatActivity() {
         confirmacionDialog.show()
     }
 
-    fun fileUpload() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "*/*"
-        startActivityForResult(intent, File)
-    }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
-            val imagenUri: Uri? = data.data
-            if (imagenUri != null) {
-                // Obtener el idProd actualizado después de agregar el elemento en la base de datos
-                val idProd = idProdActual
-
-
-                if (idProd != null) {
-                    subirImagenFirebase() // Pasar el idProd correcto
-                } else {
-                    Toast.makeText(this, "Error: idProd es nulo", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-    private fun subirImagenFirebase() {
-        val imagenUri = this.imagenUri // Obtener la URI de la imagen desde la variable de clase
-
-        if (imagenUri != null) {
-            val storage = FirebaseStorage.getInstance()
-            val storageRef = storage.reference
-            val idProd = idProdActual ?: return // Obtener el idProd actual o salir si es nulo
-
-            // Crear una referencia al archivo en Firebase Storage
-            val fileRef: StorageReference = storageRef.child("Imagenes/$idProd.jpg") // Cambiar la extensión según el formato de tu imagen
-
-            // Subir la imagen al Firebase Storage
-            fileRef.putFile(imagenUri)
-                .addOnSuccessListener { taskSnapshot ->
-                    // Imagen subida exitosamente
-                    // Obtener la URL de descarga de la imagen
-                    fileRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Actualizar la URL de la imagen en la base de datos
-                        val imageUrl = uri.toString()
-                        actualizarUrlImagenEnInventario(idProd, imageUrl)
-                    }.addOnFailureListener { exception ->
-                        // Manejar errores al obtener la URL de descarga de la imagen
-                        Log.e(TAG, "Error al obtener la URL de descarga de la imagen: $exception")
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    // Manejar errores al subir la imagen al Firebase Storage
-                    Log.e(TAG, "Error al subir la imagen al Firebase Storage: $exception")
-                }
-        } else {
-            Toast.makeText(this, "Error: La URI de la imagen es nula", Toast.LENGTH_SHORT).show()
-        }
-    }
-    private fun actualizarUrlImagenEnInventario(idProd: String, imageUrl: String) {
-        // Buscar el InventarioItem correspondiente y actualizar su URL de imagen
-        val item = productoList.find { it.idProd == idProd }
-        item?.let {
-            it.img = imageUrl // Actualizar la URL de la imagen
-            productoAdapter.notifyDataSetChanged() // Notificar al adaptador sobre el cambio
-        }
-    }
-
-
     private fun obtenerDatosProductos() {
         val db = FirebaseFirestore.getInstance()
         val productosRef = db.collection("Productos")
@@ -432,9 +401,9 @@ class ListaProductos : AppCompatActivity() {
                     val descrip = document.getString("descrip") ?: ""
                     val nombre = document.getString("nombre") ?: ""
                     val precio = document.getDouble("precio") ?: 0.0
+                    val img = document.getString("img") ?: ""
 
-
-                    val item = Producto(cantidadG, descrip, null, nombre, precio, idProd) // Usar el ID como idProd
+                    val item = Producto(cantidadG, descrip, img, nombre, precio, idProd) // Usar el ID como idProd
                     listaProductos.add(item)
                 }
                 productoList = listaProductos

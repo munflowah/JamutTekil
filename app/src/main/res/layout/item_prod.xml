@@ -1,66 +1,133 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/imgProducto"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/chorizopaquete" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@drawable/chorizopaquete" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/nombreTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/alata"
+        android:text="Nombre del producto"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgProducto" />
 
-        <TextView
-            android:id="@+id/nombreTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp" />
+    <TextView
+        android:id="@+id/descripTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="55dp"
+        android:fontFamily="@font/alata"
+        android:text="Descripcion"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/imgProducto"
+        app:layout_constraintTop_toBottomOf="@+id/nombreTextView"
+        />
 
-        <TextView
-            android:id="@+id/cantidadTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:text="Cantidad: "
-            />
+    <TextView
+        android:id="@+id/idProdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/alata"
+        android:text="ID"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/descripTextView"
+        app:layout_constraintTop_toBottomOf="@+id/descripTextView"
+        />
+
+    <TextView
+        android:id="@+id/cantidadTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/alata"
+        android:text="Cantidad"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/idProdTextView"
+        app:layout_constraintTop_toBottomOf="@+id/idProdTextView"
+        />
+
+    <TextView
+        android:id="@+id/precioProdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/alata"
+        android:text="precio"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/cantidadTextView"
+        app:layout_constraintTop_toBottomOf="@+id/cantidadTextView" />
+
+    <TextView
+        android:id="@+id/tVCantidadProducto"
+        android:layout_width="36dp"
+        android:layout_height="19dp"
+        android:text="0"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@id/nombreTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"/>
+
+    <Button
+        android:id="@+id/btnAgregar"
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#F28F38"
+        android:padding="5dp"
+        android:text="Agregar"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@+id/tVCantidadProducto"
+        app:layout_constraintTop_toBottomOf="@id/tVCantidadProducto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/sumar"
+        android:layout_width="20dp"
+        android:layout_height="19dp"
+        android:background="@drawable/add"
+        app:layout_constraintBottom_toTopOf="@+id/btnAgregar"
+        app:layout_constraintStart_toEndOf="@+id/tVCantidadProducto"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/restarProducto"
+        android:layout_width="20dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="3dp"
+        android:background="@drawable/remove"
+        app:layout_constraintBottom_toTopOf="@id/btnAgregar"
+        app:layout_constraintStart_toEndOf="@+id/sumar"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
-
-        <TextView
-            android:id="@+id/idProdTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/precioProdTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:text="Precio: "/>
-
-        <TextView
-            android:id="@+id/descripTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
-            android:text="Descripción: "
-            />
-
-
-    </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
