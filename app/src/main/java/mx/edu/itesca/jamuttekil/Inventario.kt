@@ -1,3 +1,4 @@
+
 package mx.edu.itesca.jamuttekil
 
 import InventarioAdapter
@@ -130,7 +131,7 @@ class Inventario : AppCompatActivity() {
         // Actualizar el adaptador de la lista
         inventarioAdapter.actualizarLista(inventarioList)
     }
-//FIN DE FILTRO
+    //FIN DE FILTRO
     private fun manejarSeleccionElemento() {
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = inventarioAdapter.getItem(position) as InventarioItem
@@ -413,63 +414,39 @@ class Inventario : AppCompatActivity() {
                 Toast.makeText(this, "Error al eliminar el elemento", Toast.LENGTH_SHORT).show()
             }
     }
+
+
+
+    private fun subirImagenFirebase() {
+        val uploadImageView: ImageView=findViewById(R.id.uploadImageView)
+        uploadImageView.setOnClickListener {
+            fileUpload()
+        }
+    }
     fun fileUpload() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
         startActivityForResult(intent, File)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
-            val imagenUri: Uri? = data.data
-            if (imagenUri != null) {
-                // Obtener el idProd actualizado después de agregar el elemento en la base de datos
-                val idProd = idProdActual
-
-
-                if (idProd != null) {
-                    subirImagenFirebase() // Pasar el idProd correcto
-                } else {
-                    Toast.makeText(this, "Error: idProd es nulo", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "Error al obtener la imagen", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-
-    private fun subirImagenFirebase() {
-        val imagenUri = this.imagenUri // Obtener la URI de la imagen desde la variable de clase
-
-        if (imagenUri != null) {
-            val storage = FirebaseStorage.getInstance()
-            val storageRef = storage.reference
-            val idProd = idProdActual ?: return // Obtener el idProd actual o salir si es nulo
-
-            // Crear una referencia al archivo en Firebase Storage
-            val fileRef: StorageReference = storageRef.child("Imagenes/$idProd.jpg") // Cambiar la extensión según el formato de tu imagen
-
-            // Subir la imagen al Firebase Storage
-            fileRef.putFile(imagenUri)
-                .addOnSuccessListener { taskSnapshot ->
-                    // Imagen subida exitosamente
-                    // Obtener la URL de descarga de la imagen
-                    fileRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Actualizar la URL de la imagen en la base de datos
-                        val imageUrl = uri.toString()
-                        actualizarUrlImagenEnInventario(idProd, imageUrl)
-                    }.addOnFailureListener { exception ->
-                        // Manejar errores al obtener la URL de descarga de la imagen
-                        Log.e(TAG, "Error al obtener la URL de descarga de la imagen: $exception")
+        if (requestCode == File) {
+            if (resultCode == RESULT_OK) {
+                val FileUri = data!!.data
+                val Folder: StorageReference =
+                    FirebaseStorage.getInstance().getReference().child("Inventario")
+                val file_name: StorageReference = Folder.child("file" + FileUri!!.lastPathSegment)
+                file_name.putFile(FileUri).addOnSuccessListener { taskSnapshot ->
+                    file_name.getDownloadUrl().addOnSuccessListener { uri ->
+                        val hashMap =
+                            HashMap<String, String>()
+                        hashMap["link"] = java.lang.String.valueOf(uri)
+                        myRef.setValue(hashMap)
+                        Log.d("Mensaje", "Se subió correctamente")
                     }
                 }
-                .addOnFailureListener { exception ->
-                    // Manejar errores al subir la imagen al Firebase Storage
-                    Log.e(TAG, "Error al subir la imagen al Firebase Storage: $exception")
-                }
-        } else {
-            Toast.makeText(this, "Error: La URI de la imagen es nula", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
