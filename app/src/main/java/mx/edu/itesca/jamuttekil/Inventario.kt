@@ -2,7 +2,6 @@
 package mx.edu.itesca.jamuttekil
 
 import InventarioAdapter
-import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
@@ -39,6 +38,8 @@ class Inventario : AppCompatActivity() {
     val REQUEST_CODE_GALLERY = 0
     private var idProdActual: String? = null
     private var imagenUri: Uri? = null
+    private var imgURL : String? = null
+    private var callback: ((String) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,33 +104,31 @@ class Inventario : AppCompatActivity() {
     }
 
     //AQUI SON METODOS DEL FILTRO
-    // Función para filtrar la lista por nombre del elemento
+    // Lista para almacenar los productos filtrados
+    private var productoListFiltrada: MutableList<InventarioItem> = mutableListOf()
+
     private fun filtrarLista(nombreFiltro: String) {
-        val listaFiltrada = if (nombreFiltro.isNotBlank()) {
-            obtenerListaCompleta().filter { item ->
+        productoListFiltrada = if (nombreFiltro.isNotBlank()) {
+            inventarioList.filter { item ->
                 item.nombre.contains(nombreFiltro, ignoreCase = true)
-            }
+            }.toMutableList()
         } else {
-            obtenerListaCompleta()
+            inventarioList
         }
-        actualizarLista(listaFiltrada)
+        actualizarLista(productoListFiltrada)
     }
-
-
-
     private fun mostrarListaCompleta() {
         val listaCompleta: List<InventarioItem> = obtenerListaCompleta()
         actualizarLista(listaCompleta)
     }
 
-    private fun obtenerListaCompleta(): List<InventarioItem> {
+    private fun obtenerListaCompleta(): MutableList<InventarioItem> {
         return inventarioList
     }
 
     private fun actualizarLista(nuevaLista: List<InventarioItem>) {
-        inventarioList = nuevaLista.toMutableList()
         // Actualizar el adaptador de la lista
-        inventarioAdapter.actualizarLista(inventarioList)
+        inventarioAdapter.actualizarLista(nuevaLista)
     }
     //FIN DE FILTRO
     private fun manejarSeleccionElemento() {
@@ -166,7 +165,13 @@ class Inventario : AppCompatActivity() {
             .setCancelable(true)
             .create()
         uploadImageView.setOnClickListener {
-            fileUpload()
+            btnGuardarElemento.isEnabled = false
+
+            fileUpload{url ->
+                imgURL = url
+                btnGuardarElemento.isEnabled = true
+            }
+
         }
         btnGuardarElemento.setOnClickListener {
             val nombre = etNombre.text.toString().trim()
@@ -174,16 +179,46 @@ class Inventario : AppCompatActivity() {
             val unidadMedida = etUnidadMedida.text.toString().trim()
             val precioProd = etPrecioProd.text.toString().toDoubleOrNull() ?: 0.0
 
-            if (imagenUri != null) {
-                subirImagenFirebase() // Llamar a la función de subir imagen
+            val localImgURL = imgURL
 
+            if (localImgURL != null) {
+                guardarElementoEnBaseDeDatos(nombre, cantidad, unidadMedida, precioProd,localImgURL)
             } else {
-                guardarElementoEnBaseDeDatos(nombre, cantidad, unidadMedida, precioProd, null)
+                guardarElementoSinImagenEnBaseDeDatos(nombre, cantidad, unidadMedida, precioProd, null)
             }
             dialogBuilder.dismiss()
         }
 
         dialogBuilder.show()
+    }
+
+    fun fileUpload(callback: (String) -> Unit) {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        startActivityForResult(intent, File)
+        this.callback = callback
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == File) {
+            if (resultCode == RESULT_OK) {
+                val FileUri = data!!.data
+                val Folder: StorageReference =
+                    FirebaseStorage.getInstance().getReference().child("Inventario")
+                val file_name: StorageReference = Folder.child("file" + FileUri!!.lastPathSegment)
+                file_name.putFile(FileUri).addOnSuccessListener { taskSnapshot ->
+                    file_name.getDownloadUrl().addOnSuccessListener { uri ->
+                        val hashMap =
+                            HashMap<String, String>()
+                        hashMap["link"] = java.lang.String.valueOf(uri)
+                        myRef.setValue(hashMap)
+                        Log.d("Mensaje", "Se subió correctamente")
+                        callback?.invoke(uri.toString())
+                    }
+                }
+            }
+        }
     }
 
     private fun mostrarDialogoEditarElemento(item: InventarioItem) {
@@ -246,6 +281,42 @@ class Inventario : AppCompatActivity() {
         cantidad: Double,
         unidadMedida: String,
         precioProd: Double,
+        imagenUri: String
+    ) {
+        val db = FirebaseFirestore.getInstance()
+        val inventarioRef = db.collection("Inventario")
+
+        val nuevoElemento = hashMapOf(
+            "nombre" to nombre,
+            "cantidad" to cantidad,
+            "unidadMedida" to unidadMedida,
+            "precioProd" to precioProd,
+            "imagenUrl" to imagenUri
+        )
+
+        inventarioRef.add(nuevoElemento)
+            .addOnSuccessListener { documentReference ->
+                // Obtener ID del nuevo elemento creado en la base de datos
+                val idProd = documentReference.id
+                idProdActual = idProd
+
+                // Actualizar lista local y adaptador con el nuevo elemento
+                val nuevoItem = InventarioItem(nombre, cantidad, unidadMedida, idProd, precioProd, imagenUri)
+                inventarioList.add(nuevoItem)
+                inventarioAdapter.actualizarLista(inventarioList)
+                inventarioAdapter.notifyDataSetChanged()
+
+                Toast.makeText(this, "Elemento agregado exitosamente", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al actualizar el elemento", Toast.LENGTH_SHORT).show()
+            }
+    }
+    private fun guardarElementoSinImagenEnBaseDeDatos(
+        nombre: String,
+        cantidad: Double,
+        unidadMedida: String,
+        precioProd: Double,
         imagenUri: Uri?
     ) {
         val db = FirebaseFirestore.getInstance()
@@ -266,15 +337,10 @@ class Inventario : AppCompatActivity() {
                 idProdActual = idProd
 
                 // Actualizar lista local y adaptador con el nuevo elemento
-                val nuevoItem = InventarioItem(nombre, cantidad, unidadMedida, idProd, precioProd)
+                val nuevoItem = InventarioItem(nombre, cantidad, unidadMedida, idProd, precioProd,null)
                 inventarioList.add(nuevoItem)
                 inventarioAdapter.actualizarLista(inventarioList)
                 inventarioAdapter.notifyDataSetChanged()
-
-                // Subir la imagen si se seleccionó una
-                if (imagenUri != null) {
-                    subirImagenFirebase()
-                }
 
                 Toast.makeText(this, "Elemento agregado exitosamente", Toast.LENGTH_SHORT).show()
             }
@@ -282,37 +348,6 @@ class Inventario : AppCompatActivity() {
                 Toast.makeText(this, "Error al actualizar el elemento", Toast.LENGTH_SHORT).show()
             }
     }
-
-    private fun subirImagenAServer(imagenUri: Uri, idProd: String) {
-        // Obtener una referencia al Firebase Storage
-        val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference
-
-        // Crear una referencia al archivo en Firebase Storage
-        val fileRef: StorageReference = storageRef.child("images/$idProd.jpg") // Cambiar la extensión según el formato de tu imagen
-
-        // Subir la imagen al Firebase Storage
-        fileRef.putFile(imagenUri)
-            .addOnSuccessListener { taskSnapshot ->
-                // Imagen subida exitosamente
-                // Obtener la URL de descarga de la imagen
-                fileRef.downloadUrl.addOnSuccessListener { uri ->
-                    // Aquí puedes guardar la URL de la imagen en la base de datos
-                    val imageUrl = uri.toString()
-                    // Por ejemplo, actualizando la URL en el documento del producto
-                    actualizarUrlImagenEnInventario(idProd, imageUrl)
-                }.addOnFailureListener { exception ->
-                    // Manejar errores al obtener la URL de descarga de la imagen
-                    Log.e(TAG, "Error al obtener la URL de descarga de la imagen: $exception")
-                }
-            }
-            .addOnFailureListener { exception ->
-                // Manejar errores al subir la imagen al Firebase Storage
-                Log.e(TAG, "Error al subir la imagen al Firebase Storage: $exception")
-            }
-    }
-
-
 
     private fun actualizarElementoEnBaseDeDatos(
         idProd: String,
@@ -368,8 +403,9 @@ class Inventario : AppCompatActivity() {
                     val unidadMedida = document.getString("unidadMedida") ?: ""
                     val idProd = document.id // Obtener el ID del documento
                     val precioProd = document.getDouble("precioProd") ?: 0.0
+                    val imagenUrl = document.getString("imagenUrl") ?: ""
 
-                    val item = InventarioItem(nombre, cantidad, unidadMedida, idProd, precioProd)
+                    val item = InventarioItem(nombre, cantidad, unidadMedida, idProd, precioProd, imagenUrl)
                     listaInventario.add(item)
                 }
                 // Asignar la lista de inventario obtenida a inventarioList y actualizar el adaptador
@@ -414,44 +450,6 @@ class Inventario : AppCompatActivity() {
                 Toast.makeText(this, "Error al eliminar el elemento", Toast.LENGTH_SHORT).show()
             }
     }
-
-
-
-    private fun subirImagenFirebase() {
-        val uploadImageView: ImageView=findViewById(R.id.uploadImageView)
-        uploadImageView.setOnClickListener {
-            fileUpload()
-        }
-    }
-    fun fileUpload() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "*/*"
-        startActivityForResult(intent, File)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == File) {
-            if (resultCode == RESULT_OK) {
-                val FileUri = data!!.data
-                val Folder: StorageReference =
-                    FirebaseStorage.getInstance().getReference().child("Inventario")
-                val file_name: StorageReference = Folder.child("file" + FileUri!!.lastPathSegment)
-                file_name.putFile(FileUri).addOnSuccessListener { taskSnapshot ->
-                    file_name.getDownloadUrl().addOnSuccessListener { uri ->
-                        val hashMap =
-                            HashMap<String, String>()
-                        hashMap["link"] = java.lang.String.valueOf(uri)
-                        myRef.setValue(hashMap)
-                        Log.d("Mensaje", "Se subió correctamente")
-                    }
-                }
-            }
-        }
-    }
-
-
-
     private fun actualizarUrlImagenEnInventario(idProd: String, imageUrl: String) {
         // Buscar el InventarioItem correspondiente y actualizar su URL de imagen
         val item = inventarioList.find { it.idProd == idProd }
@@ -460,8 +458,4 @@ class Inventario : AppCompatActivity() {
             inventarioAdapter.notifyDataSetChanged() // Notificar al adaptador sobre el cambio
         }
     }
-
-
-
-
-}
+    }

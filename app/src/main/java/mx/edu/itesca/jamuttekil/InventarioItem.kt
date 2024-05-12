@@ -6,5 +6,5 @@ data class InventarioItem(
     var unidadMedida: String,
     val idProd: String,
     var precioProd: Double,
-    var imagenUrl: String? = null
+    var imagenUrl: String?
 )
