@@ -49,6 +49,8 @@ class Carrito : AppCompatActivity(), CarritoAdapter.OnDeleteItemClickListener {
     }
 
 
+
+
     private fun eliminarProducto(position: Int) {
         productosCarrito.removeAt(position)
         adapter.notifyItemRemoved(position)

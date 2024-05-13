@@ -21,6 +21,7 @@ class CarritoAdapter(
         val descripProducto: TextView = itemView.findViewById(R.id.descripTextView)
         val cantidadProducto: TextView = itemView.findViewById(R.id.cantidadTextView)
         val btnEliminar: Button = itemView.findViewById(R.id.btnEliminar)
+        val idProdTextView: TextView = itemView.findViewById(R.id.idProdTextView)
 
         init {
             btnEliminar.setOnClickListener {
@@ -43,13 +44,15 @@ class CarritoAdapter(
 
         holder.nombreProducto.text = producto.nombre
         holder.cantidadProducto.text = "Cantidad: ${producto.cantidadG}"
+        holder.idProdTextView.text = "ID: ${producto.idProd}"
         holder.precioProducto.text = "Precio: $${producto.precio}"
         holder.descripProducto.text = "Descripción: ${producto.descrip}"
 
         holder.btnEliminar.setOnClickListener {
-            mostrarConfirmacionEliminar(producto.idProd)  // Pasa el ID del producto que se va a eliminar
+            onDeleteItemClickListener?.onDeleteItemClick(position)  // Pasa la posición del producto
         }
     }
+
 
     override fun getItemCount(): Int {
         return productos.size
@@ -60,6 +63,7 @@ class CarritoAdapter(
     interface OnDeleteItemClickListener {
         fun onDeleteItemClick(position: Int)
     }
+
 
     fun setOnDeleteItemClickListener(listener: OnDeleteItemClickListener) {
         this.onDeleteItemClickListener = listener
