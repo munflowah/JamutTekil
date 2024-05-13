@@ -40,6 +40,10 @@
         <activity android:name=".Carrito" />
         <activity android:name=".CarritoAdapter" />
         <activity android:name=".ConfirmarCompraActivity" />
+        <activity android:name=".PedidosRealizadosActivity" />
+        <activity android:name=".PedidosAdapter" />
+
+
 
         <meta-data
             android:name="preloaded_fonts"
