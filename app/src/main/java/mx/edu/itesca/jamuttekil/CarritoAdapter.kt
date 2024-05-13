@@ -69,8 +69,9 @@ class CarritoAdapter(
         // Este método se mueve a la actividad Carrito y se implementa en la interfaz OnDeleteItemClickListener
     }
 
-    fun eliminarProducto(position: Int) {
+    public fun eliminarProducto(position: Int) {
         productos.removeAt(position)
         notifyItemRemoved(position)
     }
+
 }
