@@ -405,7 +405,7 @@ class ListaProductos : AppCompatActivity() {
                     val precio = document.getDouble("precio") ?: 0.0
                     val img = document.getString("img") ?: ""
 
-                    val item = Producto(cantidadG, descrip, img, nombre, precio, idProd) // Usar el ID como idProd
+                    val item = Producto(cantidadG, descrip, img, nombre, precio, idProd)
                     listaProductos.add(item)
                 }
                 productoList = listaProductos

@@ -58,24 +58,32 @@ class MenuProductosActivity : AppCompatActivity(), ProductoListener {
     }
 
     private fun obtenerDatosProductos() {
-        firestore.collection("Productos")
-            .get()
-            .addOnSuccessListener { querySnapshot: QuerySnapshot? ->
-                querySnapshot?.let { snapshot ->
-                    productoList.clear()
+        val db = FirebaseFirestore.getInstance()
+        val productosRef = db.collection("Productos")
 
-                    for (document in snapshot.documents) {
-                        val producto = document.toObject(Producto::class.java)
-                        producto?.let { productoList.add(it) }
-                    }
+        productosRef.get()
+            .addOnSuccessListener { result ->
+                val listaProductos = mutableListOf<Producto>()
+                for (document in result) {
+                    val idProd = document.id
+                    val cantidadG = document.getString("cantidadG") ?: ""
+                    val descrip = document.getString("descrip") ?: ""
+                    val nombre = document.getString("nombre") ?: ""
+                    val precio = document.getDouble("precio") ?: 0.0
+                    val img = document.getString("img") ?: ""
 
-                    menuProductoAdapter.notifyDataSetChanged()
+                    val item = Producto(cantidadG, descrip, img, nombre, precio, idProd) // Usar el ID como idProd
+                    listaProductos.add(item)
                 }
+                productoList = listaProductos
+                menuProductoAdapter.actualizarLista(productoList)
             }
             .addOnFailureListener { exception ->
-                Log.e("MenuProductosActivity", "Error al obtener productos: $exception")
+                // Manejar errores al obtener datos de productos desde Firestore
+                Log.e("MenuProductosActivity", "Error al obtener datos de productos: $exception")
             }
     }
+
 
     override fun onProductoAgregado(producto: Producto) {
         contadorCarrito++

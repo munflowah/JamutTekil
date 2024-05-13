@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 
 class MenuProductoAdapter(
     private val context: Context,
-    private val productoList: List<Producto>,
+    private var productoList: List<Producto>,
     private val productoListener: MenuProductosActivity
 ) : BaseAdapter() {
 
@@ -33,6 +33,11 @@ class MenuProductoAdapter(
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
+    fun actualizarLista(nuevaLista: List<Producto>) {
+        productoList = nuevaLista
+        notifyDataSetChanged()
+    }
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView

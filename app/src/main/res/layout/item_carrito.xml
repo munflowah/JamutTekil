@@ -36,6 +36,14 @@
             />
 
         <TextView
+            android:id="@+id/idProdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="ID: "
+            android:layout_marginBottom="8dp" />
+
+        <TextView
             android:id="@+id/precioProdTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
