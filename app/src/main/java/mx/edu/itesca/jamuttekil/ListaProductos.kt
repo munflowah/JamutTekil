@@ -287,7 +287,7 @@ class ListaProductos : AppCompatActivity() {
                 // Obtener ID del nuevo producto creado en la base de datos
                 val idProd = documentReference.id
 
-                val nuevoItem = Producto(cantidadG, descrip, null, nombre, precio, idProd)
+                val nuevoItem = Producto(cantidadG, descrip, null.toString(), nombre, precio, idProd)
                 productoList.add(nuevoItem)
                 productoAdapter.actualizarLista(productoList)
                 productoAdapter.notifyDataSetChanged()

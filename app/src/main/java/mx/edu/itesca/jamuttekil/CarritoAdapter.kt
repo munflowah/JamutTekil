@@ -12,65 +12,55 @@ import com.bumptech.glide.Glide
 
 class CarritoAdapter(
 
-    private val context: Context,
-    private var listaCarrito: List<Producto>
+    private val productos: MutableList<Producto>
 
-) : RecyclerView.Adapter<CarritoAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CarritoAdapter.CarritoViewHolder>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgProductoCarrito: ImageView = itemView.findViewById(R.id.imgProducto)
-        val nombreProductoCarrito: TextView = itemView.findViewById(R.id.nombreTextView)
-        val cantidadProductoCarrito: TextView = itemView.findViewById(R.id.cantidadTextView)
-        val precioProductoCarrito: TextView = itemView.findViewById(R.id.precioProdTextView)
-        val descripProductoCarrito: TextView = itemView.findViewById(R.id.descripTextView)
+
+    inner class CarritoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imgProducto: ImageView = itemView.findViewById(R.id.imgProducto)
+        val nombreProducto: TextView = itemView.findViewById(R.id.nombreTextView)
+        val precioProducto: TextView = itemView.findViewById(R.id.precioProdTextView)
+        val descripProducto: TextView = itemView.findViewById(R.id.descripTextView)
+        val cantidadProducto: TextView = itemView.findViewById(R.id.cantidadTextView)
         val btnEliminar: Button = itemView.findViewById(R.id.btnEliminar)
-
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarritoViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_carrito, parent, false)
+        return CarritoViewHolder(view)
     }
 
-    private var onItemClickListener: OnItemClickListener? = null
+    override fun onBindViewHolder(holder: CarritoViewHolder, position: Int) {
+        val producto = productos[position]
 
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.onItemClickListener = listener
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val vista = LayoutInflater.from(context).inflate(R.layout.item_carrito, parent, false)
-        return ViewHolder(vista)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val producto = listaCarrito[position]
-
-        // Asignar los datos del producto al ViewHolder
-        Glide.with(context)
-            .load(producto.img)
-            .placeholder(R.drawable.placeholder)
-            .error(R.drawable.icchorizo)
-            .centerCrop()
-            .into(holder.imgProductoCarrito)
-
-        holder.nombreProductoCarrito.text = producto.nombre
-        holder.cantidadProductoCarrito.text = "Cantidad: ${producto.cantidadG}"
-        holder.precioProductoCarrito.text = "Precio: $${producto.precio}"
-        holder.descripProductoCarrito.text = "Descripción: ${producto.descrip}"
+        holder.nombreProducto.text = producto.nombre
+        holder.cantidadProducto.text = "Cantidad: ${producto.cantidadG}"
+        holder.precioProducto.text = "Precio: $${producto.precio}"
+        holder.descripProducto.text = "Descripción: ${producto.descrip}"
 
         holder.btnEliminar.setOnClickListener {
-
-            onItemClickListener?.onItemClick(position)
+            onDeleteItemClickListener?.onDeleteItemClick(position)
         }
-
     }
 
     override fun getItemCount(): Int {
-        return listaCarrito.size
+        return productos.size
     }
-    fun actualizarLista(nuevaLista: List<Producto>) {
-        listaCarrito = nuevaLista
-        notifyDataSetChanged() // Notificar al RecyclerView que los datos han cambiado
+    fun eliminarProducto(position: Int) {
+        productos.removeAt(position)
+        notifyItemRemoved(position)
     }
+    //BOTON ELIMINAR
+    interface OnDeleteItemClickListener {
+        fun onDeleteItemClick(position: Int)
+    }
+    private var onDeleteItemClickListener: OnDeleteItemClickListener? = null
+
+    fun setOnDeleteItemClickListener(listener: OnDeleteItemClickListener) {
+        this.onDeleteItemClickListener = listener
+    }
+
 }
 

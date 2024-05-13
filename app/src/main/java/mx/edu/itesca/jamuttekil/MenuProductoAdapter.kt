@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 class MenuProductoAdapter(
     private val context: Context,
     private val productoList: List<Producto>,
-    private val productoListener: ProductoListener? = null
+    private val productoListener: MenuProductosActivity
 ) : BaseAdapter() {
 
     interface ProductoListener {
@@ -70,7 +70,7 @@ class MenuProductoAdapter(
         return view!!
     }
 
-    private class ViewHolder(view: View) {
+    class ViewHolder(view: View) {
         val nombreTextView: TextView = view.findViewById(R.id.nombreTextView)
         val imgProducto: ImageView = view.findViewById(R.id.imgProducto)
         val cantidadTextView: TextView = view.findViewById(R.id.cantidadTextView)
@@ -81,4 +81,6 @@ class MenuProductoAdapter(
         val btnAgregar: Button = view.findViewById(R.id.btnAgregar)
 
     }
+
+
 }

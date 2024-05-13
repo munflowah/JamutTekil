@@ -31,13 +31,13 @@ class MenuProductosActivity : AppCompatActivity(), ProductoListener {
         cantidadCarritoTextView = findViewById(R.id.tVCantidadCarro)
         contadorCarrito = 0
         actualizarContadorCarrito()
-        menuProductoAdapter = MenuProductoAdapter(this, productoList)
-
+        menuProductoAdapter = MenuProductoAdapter(this, productoList, this)
         lvMenuProductos.adapter = menuProductoAdapter
 
 
         val imgCar = findViewById<ImageView>(R.id.imgCar)
         imgCar.setOnClickListener { abrirCarrito() }
+
 
         obtenerDatosProductos()
     }
@@ -49,8 +49,6 @@ class MenuProductosActivity : AppCompatActivity(), ProductoListener {
     private fun abrirCarrito() {
         val intent = Intent(this, Carrito::class.java)
         intent.putExtra("productosCarrito", productosCarrito)
-        Log.d("Carrito", "Productos a enviar: ${productosCarrito}")
-
         startActivity(intent)
     }
 
@@ -75,6 +73,7 @@ class MenuProductosActivity : AppCompatActivity(), ProductoListener {
                 }
             }
             .addOnFailureListener { exception ->
+                Log.e("MenuProductosActivity", "Error al obtener productos: $exception")
             }
     }
 
@@ -83,8 +82,6 @@ class MenuProductosActivity : AppCompatActivity(), ProductoListener {
         actualizarContadorCarrito()
         Toast.makeText(this, "Producto ${producto.nombre} agregado al carrito", Toast.LENGTH_SHORT).show()
         productosCarrito.add(producto)
-
-        abrirCarrito()
     }
 
     override fun onProductoQuitado(producto: Producto) {
@@ -92,8 +89,6 @@ class MenuProductosActivity : AppCompatActivity(), ProductoListener {
             contadorCarrito--
             actualizarContadorCarrito()
             productosCarrito.remove(producto)
-
-            abrirCarrito()
         }
     }
 }

@@ -56,6 +56,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.github.bumptech.glide:glide:4.13.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.13.2")
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
 
     implementation("androidx.activity:activity:1.9.0")
     testImplementation("junit:junit:4.13.2")

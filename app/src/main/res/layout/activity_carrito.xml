@@ -27,7 +27,7 @@
 
     <!-- Lista de productos en el carrito -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCarrito"
+        android:id="@+id/rvProductosCarrito"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -49,20 +49,12 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/btnVaciarCarrito"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnPagar"
+            android:layout_width="252dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:backgroundTint="@color/rojo"
-            android:text="Vaciar Carrito" />
-
-        <Button
-            android:id="@+id/btnPagar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pagar"
             android:backgroundTint="@color/green"
-            android:layout_margin="16dp" />
+            android:text="Pagar" />
 
     </LinearLayout>
 
