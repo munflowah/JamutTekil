@@ -1,6 +1,5 @@
 package mx.edu.itesca.jamuttekil
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -18,6 +17,7 @@ class ConfirmarCompraActivity : AppCompatActivity() {
     private lateinit var etHoraRecogida: EditText
     private lateinit var btnFinalizarPedido: Button
     private lateinit var tvPrecioTotal: TextView
+    private lateinit var etFechaRecogida: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +29,7 @@ class ConfirmarCompraActivity : AppCompatActivity() {
         etHoraRecogida = findViewById(R.id.editTextHoraRecoger)
         btnFinalizarPedido = findViewById(R.id.btnFinalizarPedido)
         tvPrecioTotal = findViewById(R.id.textViewPrecioTotal)
+        etFechaRecogida = findViewById(R.id.editTextFechaRecoger)
 
         val rvCompra: RecyclerView = findViewById(R.id.rvCompra)
         rvCompra.layoutManager = LinearLayoutManager(this)
@@ -43,23 +44,27 @@ class ConfirmarCompraActivity : AppCompatActivity() {
         tvPrecioTotal.text = "$total MXN "
 
         btnFinalizarPedido.setOnClickListener {
-            finalizarPedido(total)
+            val horaRecogida = etHoraRecogida.text.toString().trim()
+            finalizarPedido(total, horaRecogida)
         }
+
     }
 
-    private fun finalizarPedido(total: Double) {
+    private fun finalizarPedido(total: Double, horaRecogida: String) {
         val nombreCliente = etNombreCliente.text.toString().trim()
         val telefonoCliente = etTelefonoCliente.text.toString().trim()
-        val horaRecogida = etHoraRecogida.text.toString().trim()
+        val horaRecogidaInput = etHoraRecogida.text.toString().trim()
+        val fechaRecogida = etFechaRecogida.text.toString().trim()
 
-        if (nombreCliente.isEmpty() || telefonoCliente.isEmpty() || horaRecogida.isEmpty()) {
+        if (nombreCliente.isEmpty() || telefonoCliente.isEmpty() || horaRecogidaInput.isEmpty()) {
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             return
         }
 
         val productosCarrito = intent.getSerializableExtra("productosCarrito") as? ArrayList<Producto>
         if (productosCarrito != null) {
-            val pedido = Pedido(nombreCliente, telefonoCliente, horaRecogida, productosCarrito, total)
+            val pedido = Pedido(nombreCliente, telefonoCliente, horaRecogidaInput, productosCarrito,
+                total.toString(), fechaRecogida)
 
             // Guardar el pedido en Firestore
             db.collection("Pedido")
@@ -74,4 +79,8 @@ class ConfirmarCompraActivity : AppCompatActivity() {
             Toast.makeText(this, "Error: No se recibieron los datos del carrito", Toast.LENGTH_SHORT).show()
         }
     }
+
+
+
+
 }

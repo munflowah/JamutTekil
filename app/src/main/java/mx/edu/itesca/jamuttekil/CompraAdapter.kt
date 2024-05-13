@@ -58,7 +58,10 @@ class CompraAdapter(private val productos: List<Producto>, private val context: 
         val telefonoCliente = "Teléfono del cliente"
         val horaRecogida = "Hora de recogida"
         val total = calcularPrecioTotal()
-        val pedido = Pedido(nombreCliente, telefonoCliente, horaRecogida, listOf(producto), total)
+        val fechaRecogida = "Fecha de recogida"
+
+        val pedido = Pedido(nombreCliente, telefonoCliente, horaRecogida, listOf(producto),
+            total.toString(), fechaRecogida)
 
         // Guardar el pedido en Firestore
         db.collection("Pedido")
@@ -70,4 +73,5 @@ class CompraAdapter(private val productos: List<Producto>, private val context: 
                 Toast.makeText(context, "Error al guardar el pedido: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 }

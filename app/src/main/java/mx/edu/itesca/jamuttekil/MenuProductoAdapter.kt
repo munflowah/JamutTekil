@@ -70,7 +70,6 @@ class MenuProductoAdapter(
 
         holder.btnAgregar.setOnClickListener {
             productoListener?.onProductoAgregado(item)
-            Toast.makeText(context, "Producto ${item.nombre} agregado al carrito", Toast.LENGTH_SHORT).show()
         }
 
         return view!!
