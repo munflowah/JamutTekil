@@ -40,7 +40,7 @@ class ConfirmarCompraActivity : AppCompatActivity() {
         rvCompra.adapter = adapter
 
         val totalCarrito = intent.getStringExtra("totalCarrito")
-        tvPrecioTotal.text = "$totalCarrito "
+        tvPrecioTotal.text = "$total MXN "
 
         btnFinalizarPedido.setOnClickListener {
             finalizarPedido(total)

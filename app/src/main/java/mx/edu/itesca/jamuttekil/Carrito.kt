@@ -35,12 +35,14 @@ class Carrito : AppCompatActivity(), CarritoAdapter.OnDeleteItemClickListener {
         btnPagar = findViewById(R.id.btnHacerPedido)
         btnPagar.setOnClickListener {
             val tvTotal: TextView = findViewById(R.id.tvTotal)
-            val totalCarrito = tvTotal.text.toString()  // Obtener el valor del TextView tvTotal
+            btnPagar.setOnClickListener {
+                val totalCarrito = tvTotal.text.toString().substringAfter(": ").replace(" MXN", "")
+                val intent = Intent(this, ConfirmarCompraActivity::class.java)
+                intent.putExtra("total", totalCarrito.toDouble())  // Convertir el String a Double
+                intent.putExtra("productosCarrito", ArrayList(productosCarrito))
+                startActivity(intent)
+            }
 
-            val intent = Intent(this, ConfirmarCompraActivity::class.java)
-            intent.putExtra("totalCarrito", totalCarrito)
-            intent.putExtra("productosCarrito", ArrayList(productosCarrito))
-            startActivity(intent)
         }
 
         mostrarPrecioTotalSafely()
