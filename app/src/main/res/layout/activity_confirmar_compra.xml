@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:background="@color/orange">
+
+        <TextView
+            android:id="@+id/txtCarritoTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alata"
+            android:text="Finalizar Pedido"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+    <EditText
+        android:id="@+id/editTextNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre" />
+
+    <!-- EditText para la hora de recoger -->
+    <EditText
+        android:id="@+id/editTextHoraRecoger"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hora de Recoger" />
+
+    <!-- EditText para el celular -->
+    <EditText
+        android:id="@+id/editTextCelular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Celular" />
+
+    <!-- TextView para el precio total -->
+
+
+    <!-- RecyclerView para la lista de productos -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProductos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/textViewPrecioTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:text="Precio Total: " />
+
+    <Button
+        android:id="@+id/btnPagar"
+        android:layout_width="252dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="75dp"
+        android:backgroundTint="@color/green"
+        android:text="Finalizar pedido" />
+
+</LinearLayout>
