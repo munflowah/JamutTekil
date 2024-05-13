@@ -5,5 +5,6 @@ data class Pedido(
     val telefonoCliente: String,
     val horaRecogida: String,
     val productos: List<Producto>,
-    val total: Double
+    val total: Double,
+    val fechaRecogida: String
 )

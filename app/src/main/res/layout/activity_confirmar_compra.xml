@@ -35,6 +35,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Hora de Recoger" />
+    <EditText
+        android:id="@+id/editTextFechaRecoger"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha para Recoger" />
 
     <!-- EditText para el celular -->
     <EditText
