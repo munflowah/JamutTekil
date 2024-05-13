@@ -51,6 +51,8 @@ class ListaProductos : AppCompatActivity() {
 
         // Obtener datos de productos desde Firestore y mostrarlos en el ListView
         obtenerDatosProductos()
+        Log.d("ListaProductos", "Productos obtenidos: $productoList")
+
 
         listView.setOnItemClickListener { parent, view, position, id ->
             val selectedItem = productoAdapter.getItem(position) as Producto
