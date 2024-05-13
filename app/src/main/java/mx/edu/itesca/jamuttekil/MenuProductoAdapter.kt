@@ -49,6 +49,7 @@ class MenuProductoAdapter(
         val item = productoList[position]
         holder.nombreTextView.text = item.nombre
         holder.idProdTextView.text = "ID: ${item.idProd}"
+        holder.cantidadTextView.text = "Cantidad: ${item.cantidadG}"
         holder.precioProdTextView.text = "Precio: $${item.precio}"
         holder.descrip.text = "Descripción: ${item.descrip}"
 
