@@ -48,7 +48,7 @@
 
     <!-- RecyclerView para la lista de productos -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewProductos"
+        android:id="@+id/rvCompra"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
@@ -58,11 +58,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:gravity="center"
-        android:text="Precio Total: " />
+        android:gravity="center" />
 
     <Button
-        android:id="@+id/btnPagar"
+        android:id="@+id/btnFinalizarPedido"
         android:layout_width="252dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="75dp"

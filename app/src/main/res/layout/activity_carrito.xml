@@ -49,12 +49,12 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/btnPagar"
+            android:id="@+id/btnHacerPedido"
             android:layout_width="252dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:backgroundTint="@color/green"
-            android:text="Pagar" />
+            android:text="Continuar pedido" />
 
     </LinearLayout>
 

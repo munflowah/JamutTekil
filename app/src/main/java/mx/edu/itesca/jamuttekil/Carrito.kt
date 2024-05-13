@@ -1,5 +1,6 @@
 package mx.edu.itesca.jamuttekil
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
@@ -23,7 +24,6 @@ class Carrito : AppCompatActivity(), CarritoAdapter.OnDeleteItemClickListener {
         // Obtén la lista de productos del intent
         productosCarrito.addAll(intent.getSerializableExtra("productosCarrito") as ArrayList<Producto>)
 
-        btnPagar = findViewById(R.id.btnPagar)
         rvProductosCarrito = findViewById(R.id.rvProductosCarrito)
         rvProductosCarrito.layoutManager = LinearLayoutManager(this)
 
@@ -31,6 +31,18 @@ class Carrito : AppCompatActivity(), CarritoAdapter.OnDeleteItemClickListener {
         adapter = CarritoAdapter(productosCarrito)
         adapter.setOnDeleteItemClickListener(this)
         rvProductosCarrito.adapter = adapter
+
+        btnPagar = findViewById(R.id.btnHacerPedido)
+        btnPagar.setOnClickListener {
+            val tvTotal: TextView = findViewById(R.id.tvTotal)
+            val totalCarrito = tvTotal.text.toString()  // Obtener el valor del TextView tvTotal
+
+            val intent = Intent(this, ConfirmarCompraActivity::class.java)
+            intent.putExtra("totalCarrito", totalCarrito)
+            intent.putExtra("productosCarrito", ArrayList(productosCarrito))
+            startActivity(intent)
+        }
+
         mostrarPrecioTotalSafely()
     }
 
@@ -46,15 +58,6 @@ class Carrito : AppCompatActivity(), CarritoAdapter.OnDeleteItemClickListener {
                 dialog.dismiss()
             }
             .show()
-    }
-
-
-
-
-    private fun eliminarProducto(position: Int) {
-        productosCarrito.removeAt(position)
-        adapter.notifyItemRemoved(position)
-        mostrarPrecioTotalSafely()
     }
 
     private fun mostrarPrecioTotalSafely() {
@@ -76,8 +79,6 @@ class Carrito : AppCompatActivity(), CarritoAdapter.OnDeleteItemClickListener {
         return total
     }
 
-
-
     fun agregarProductoAlCarrito(producto: Producto) {
         // Verifica si la cantidad del producto es válida antes de agregarlo
         if (producto.cantidadG.isNotEmpty()) {
@@ -89,4 +90,3 @@ class Carrito : AppCompatActivity(), CarritoAdapter.OnDeleteItemClickListener {
         }
     }
 }
-

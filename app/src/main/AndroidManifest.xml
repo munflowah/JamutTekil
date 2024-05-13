@@ -39,6 +39,8 @@
         <activity android:name=".MenuProductoAdapter" />
         <activity android:name=".Carrito" />
         <activity android:name=".CarritoAdapter" />
+        <activity android:name=".ConfirmarCompraActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
